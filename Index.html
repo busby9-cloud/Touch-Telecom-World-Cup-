@@ -1,0 +1,2807 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>World Cup 2026 Sweepstake Wall Chart</title>
+<style>
+:root {
+  --ink: #172033;
+  --muted: #56657f;
+  --line: #d8deea;
+  --panel: #f7f9fc;
+  --header: #12355b;
+  --accent: #1f6feb;
+  --warn: #fff2cc;
+  --unallocated: #fce4d6;
+  --good: #e8f7ed;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: Aptos, Calibri, Arial, sans-serif;
+  color: var(--ink);
+  background: #ffffff;
+}
+header {
+  padding: 28px 32px;
+  background: linear-gradient(135deg, #12355b, #1f6feb);
+  color: white;
+}
+header h1 {
+  margin: 0 0 8px 0;
+  font-size: 32px;
+}
+header p {
+  margin: 4px 0;
+  opacity: 0.95;
+}
+main {
+  padding: 24px 32px 48px;
+}
+.notice {
+  background: #fff7e6;
+  border: 1px solid #ffd38a;
+  padding: 12px 16px;
+  border-radius: 10px;
+  margin-bottom: 18px;
+}
+.notice.good { background: #f0fff4; border-color: #a7e3b8; }
+.summary {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(120px, 1fr));
+  gap: 12px;
+  margin: 18px 0 24px;
+}
+.stat {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 14px;
+}
+.stat b {
+  display: block;
+  font-size: 24px;
+  color: var(--header);
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 14px;
+}
+.group-card, .round-section {
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  overflow: hidden;
+  background: white;
+}
+.group-card h2, .round-section h2 {
+  margin: 0;
+  padding: 11px 14px;
+  background: var(--header);
+  color: white;
+  font-size: 18px;
+}
+table { width: 100%; border-collapse: collapse; }
+td, th {
+  border-top: 1px solid var(--line);
+  padding: 8px 10px;
+  vertical-align: middle;
+}
+th {
+  background: #eaf1f8;
+  color: #12355b;
+  text-align: left;
+}
+.team { font-weight: 700; }
+.badge {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 999px;
+  font-size: 12px;
+  margin-top: 4px;
+}
+.allocated { background: #e7f3ff; color: #064c8a; }
+.unallocated { background: var(--unallocated); color: #7a2f12; }
+.section-title {
+  margin: 30px 0 10px;
+  padding-bottom: 8px;
+  border-bottom: 3px solid var(--header);
+  color: var(--header);
+}
+.small { color: var(--muted); font-size: 14px; }
+.wall-table { font-size: 13px; min-width: 1100px; }
+.wall-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 14px; }
+.wall-table td:nth-child(1), .wall-table td:nth-child(3), .wall-table td:nth-child(6), .wall-table td:nth-child(7) { text-align: center; }
+.score, .write {
+  min-width: 54px;
+  min-height: 26px;
+  background: var(--warn);
+}
+.score-cell { width: 62px; text-align: center; }
+.score-input {
+  width: 52px;
+  padding: 6px 4px;
+  border: 1px solid #c9d2e3;
+  border-radius: 8px;
+  background: #fff9df;
+  text-align: center;
+  font-size: 14px;
+}
+.note-input {
+  width: 150px;
+  padding: 6px 8px;
+  border: 1px solid #c9d2e3;
+  border-radius: 8px;
+  background: #fff;
+}
+.winner-cell { min-width: 150px; font-weight: 700; }
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  margin: 14px 0;
+}
+button {
+  border: 0;
+  border-radius: 999px;
+  background: var(--header);
+  color: white;
+  padding: 9px 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+button.secondary { background: #44546a; }
+button.warning { background: #9a3412; }
+#standings-grid {
+  grid-template-columns: repeat(auto-fit, minmax(560px, 1fr));
+  gap: 12px;
+  align-items: start;
+}
+.standings-card {
+  overflow-x: auto;
+}
+.standings-card h2 {
+  padding: 9px 11px;
+  font-size: 16px;
+}
+.standings-card table {
+  font-size: 11.5px;
+  table-layout: fixed;
+  min-width: 0;
+}
+.standings-table th, .standings-table td {
+  padding: 4px 4px;
+  line-height: 1.18;
+}
+.standings-table th:nth-child(1), .standings-table td:nth-child(1) { width: 28px; text-align: center; }
+.standings-table th:nth-child(2), .standings-table td:nth-child(2) { width: 24%; white-space: normal; }
+.standings-table th:nth-child(3), .standings-table td:nth-child(3) { width: 31%; white-space: normal; }
+.standings-table th:nth-child(4), .standings-table td:nth-child(4) { width: 38px; text-align: center; }
+.standings-table th:nth-child(n+5), .standings-table td:nth-child(n+5) { width: 29px; text-align: center; }
+.standings-table td:nth-child(n+4), .standings-table th:nth-child(n+4) { text-align: center; }
+.standings-table td.points, .standings-table th.points { font-weight: 800; font-size: 1.02em; }
+.standings-table .badge {
+  padding: 2px 5px;
+  border-radius: 7px;
+  font-size: 10.5px;
+  line-height: 1.15;
+  margin-top: 0;
+  max-width: 100%;
+  white-space: normal;
+}
+.standings-table tbody tr.rank-1, .standings-table tbody tr.rank-2 { background: var(--good); }
+.standings-table { border-collapse: collapse !important; width: 100% !important; }
+.standings-table thead { display: table-header-group !important; }
+.standings-table tbody { display: table-row-group !important; }
+.standings-table tr { display: table-row !important; visibility: visible !important; height: auto !important; }
+.standings-table th, .standings-table td { display: table-cell !important; visibility: visible !important; height: auto !important; }
+.standings-table strong { font-weight: 800; }
+
+@media (max-width: 700px) {
+  #standings-grid { grid-template-columns: 1fr; }
+  .standings-card table { font-size: 10.8px; }
+  .standings-table th, .standings-table td { padding: 3px 3px; }
+  .standings-table .badge { font-size: 10px; padding: 2px 4px; }
+}
+.rank-note { margin-top: 8px; color: var(--muted); font-size: 13px; }
+.round-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+  gap: 16px;
+  align-items: start;
+}
+footer {
+  margin-top: 28px;
+  padding-top: 12px;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 12px;
+}
+@media (max-width: 800px) {
+  main { padding: 18px 14px; }
+  header { padding: 22px 16px; }
+  .summary { grid-template-columns: repeat(2, 1fr); }
+  .round-grid { grid-template-columns: 1fr; }
+}
+
+
+body {
+  min-width: 320px;
+}
+main {
+  max-width: 1680px;
+  margin: 0 auto;
+}
+.notice,
+.summary,
+.section-title,
+.small,
+.controls,
+.wall-wrap,
+.grid,
+.round-grid,
+footer {
+  max-width: 100%;
+}
+.summary {
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+}
+.grid {
+  grid-template-columns: repeat(auto-fit, minmax(285px, 1fr));
+  align-items: stretch;
+}
+.group-card {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+.group-card > table {
+  flex: 1 1 auto;
+}
+.group-card:not(.standings-card) table {
+  table-layout: fixed;
+}
+.group-card:not(.standings-card) td:first-child {
+  width: 58%;
+}
+.group-card:not(.standings-card) td:last-child {
+  width: 42%;
+  text-align: right;
+}
+.badge {
+  text-align: center;
+  white-space: nowrap;
+}
+.group-card:not(.standings-card) .badge {
+  min-width: 88px;
+}
+#standings-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(610px, 1fr));
+  gap: 16px;
+  align-items: stretch;
+}
+.standings-card {
+  overflow: hidden;
+}
+.standings-card h2 {
+  display: flex;
+  align-items: center;
+  min-height: 42px;
+}
+.standings-table {
+  width: 100% !important;
+  min-width: 600px;
+  table-layout: fixed;
+  font-size: 12px;
+}
+.standings-table th,
+.standings-table td {
+  padding: 6px 5px;
+  line-height: 1.22;
+  overflow-wrap: anywhere;
+}
+.standings-table th:nth-child(1), .standings-table td:nth-child(1) { width: 34px; text-align: center; }
+.standings-table th:nth-child(2), .standings-table td:nth-child(2) { width: 25%; text-align: left; }
+.standings-table th:nth-child(3), .standings-table td:nth-child(3) { width: 22%; text-align: center; }
+.standings-table th:nth-child(4), .standings-table td:nth-child(4) { width: 45px; text-align: center; }
+.standings-table th:nth-child(n+5), .standings-table td:nth-child(n+5) { width: 38px; text-align: center; }
+.standings-table .badge {
+  display: inline-block;
+  min-width: 78px;
+  max-width: 100%;
+}
+.standings-table .team-name strong {
+  display: block;
+}
+.round-grid {
+  grid-template-columns: repeat(auto-fit, minmax(460px, 1fr));
+}
+.round-section table {
+  table-layout: fixed;
+}
+.round-section th,
+.round-section td {
+  overflow-wrap: anywhere;
+}
+.round-section td:nth-child(1), .round-section th:nth-child(1) { width: 72px; text-align: center; }
+.round-section td:nth-child(2), .round-section th:nth-child(2) { width: 120px; }
+.round-section td:nth-child(3), .round-section th:nth-child(3) { width: 58px; text-align: center; }
+.round-section td:nth-child(4), .round-section th:nth-child(4) { width: 28%; }
+.round-section td:nth-child(5), .round-section th:nth-child(5) { width: 80px; text-align: center; }
+.round-section td:nth-child(6), .round-section th:nth-child(6) { width: 28%; }
+.round-section td:nth-child(7), .round-section th:nth-child(7) { width: 26%; }
+
+
+/* Correction patch: keep the group stage score-entry table in the earlier working layout */
+.wall-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.wall-table {
+  width: 100%;
+}
+
+@media (max-width: 900px) {
+  main { padding: 18px 14px 36px; }
+  #standings-grid { grid-template-columns: 1fr; }
+  .standings-card { overflow-x: auto; }
+  .standings-table { min-width: 600px; }
+  .round-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 640px) {
+  header h1 { font-size: 26px; }
+  .summary { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .stat { padding: 11px; }
+  .stat b { font-size: 21px; }
+  .grid { grid-template-columns: 1fr; }
+}
+
+
+
+/* Mobile table fix: do not squeeze group tables into narrow phone screens */
+#standings-grid {
+  grid-template-columns: repeat(auto-fit, minmax(720px, 1fr));
+}
+.standings-card {
+  overflow-x: auto !important;
+  -webkit-overflow-scrolling: touch;
+}
+.standings-table {
+  width: 720px !important;
+  min-width: 720px !important;
+  table-layout: fixed !important;
+}
+.standings-table th,
+.standings-table td {
+  white-space: nowrap !important;
+  overflow-wrap: normal !important;
+  word-break: normal !important;
+  text-align: center;
+}
+.standings-table th:nth-child(1), .standings-table td:nth-child(1) { width: 38px !important; }
+.standings-table th:nth-child(2), .standings-table td:nth-child(2) { width: 145px !important; text-align: left !important; }
+.standings-table th:nth-child(3), .standings-table td:nth-child(3) { width: 120px !important; text-align: center !important; }
+.standings-table th:nth-child(4), .standings-table td:nth-child(4) { width: 54px !important; }
+.standings-table th:nth-child(n+5), .standings-table td:nth-child(n+5) { width: 52px !important; }
+.standings-table .badge {
+  white-space: nowrap !important;
+  overflow-wrap: normal !important;
+  word-break: normal !important;
+  min-width: 0 !important;
+  max-width: none !important;
+}
+.standings-table .team-name strong {
+  display: inline !important;
+}
+@media (max-width: 760px) {
+  #standings-grid {
+    display: block;
+  }
+  .standings-card {
+    margin-bottom: 16px;
+  }
+  .standings-card::after {
+    content: "Swipe table sideways to view all columns";
+    display: block;
+    padding: 7px 10px;
+    color: var(--muted);
+    font-size: 12px;
+    border-top: 1px solid var(--line);
+    background: #f7f9fc;
+  }
+}
+
+</style>
+</head>
+<body>
+<header>
+  <h1>World Cup 2026 Sweepstake Wall Chart</h1>
+  <p>Work sweepstake version with live group tables. Enter scores in the group fixtures and the points tables update automatically.</p>
+  <p>UK kick off times included.</p>
+</header>
+<main>
+<div class="summary">
+    <div class="stat"><b>48</b>teams</div>
+    <div class="stat"><b>12</b>groups</div>
+    <div class="stat"><b>32</b>allocated sweepstake teams</div>
+    <div class="stat"><b>16</b>unallocated teams</div>
+  </div>
+
+  <h2 class="section-title">Sweepstake teams by group</h2>
+  <div class="grid">
+    <section class="group-card">
+      <h2>Group A</h2>
+      <table><tbody><tr><td class="team">Mexico</td><td><span class="badge allocated">Luca</span></td></tr><tr><td class="team">South Africa</td><td><span class="badge unallocated">Unallocated</span></td></tr><tr><td class="team">South Korea</td><td><span class="badge unallocated">Unallocated</span></td></tr><tr><td class="team">Czech Republic</td><td><span class="badge allocated">Liam</span></td></tr></tbody></table>
+    </section><section class="group-card">
+      <h2>Group B</h2>
+      <table><tbody><tr><td class="team">Canada</td><td><span class="badge allocated">Cameron</span></td></tr><tr><td class="team">Bosnia &amp; Herzegovina</td><td><span class="badge unallocated">Unallocated</span></td></tr><tr><td class="team">Qatar</td><td><span class="badge unallocated">Unallocated</span></td></tr><tr><td class="team">Switzerland</td><td><span class="badge allocated">Paul</span></td></tr></tbody></table>
+    </section><section class="group-card">
+      <h2>Group C</h2>
+      <table><tbody><tr><td class="team">Brazil</td><td><span class="badge allocated">Lorraine</span></td></tr><tr><td class="team">Morocco</td><td><span class="badge allocated">Leon</span></td></tr><tr><td class="team">Haiti</td><td><span class="badge unallocated">Unallocated</span></td></tr><tr><td class="team">Scotland</td><td><span class="badge allocated">Mitch</span></td></tr></tbody></table>
+    </section><section class="group-card">
+      <h2>Group D</h2>
+      <table><tbody><tr><td class="team">USA</td><td><span class="badge allocated">Phil</span></td></tr><tr><td class="team">Paraguay</td><td><span class="badge allocated">Harrison</span></td></tr><tr><td class="team">Australia</td><td><span class="badge unallocated">Unallocated</span></td></tr><tr><td class="team">Turkey</td><td><span class="badge allocated">Andy</span></td></tr></tbody></table>
+    </section><section class="group-card">
+      <h2>Group E</h2>
+      <table><tbody><tr><td class="team">Germany</td><td><span class="badge allocated">Elliott</span></td></tr><tr><td class="team">Curacao</td><td><span class="badge unallocated">Unallocated</span></td></tr><tr><td class="team">Ivory Coast</td><td><span class="badge allocated">Carl</span></td></tr><tr><td class="team">Ecuador</td><td><span class="badge allocated">Jamie</span></td></tr></tbody></table>
+    </section><section class="group-card">
+      <h2>Group F</h2>
+      <table><tbody><tr><td class="team">Netherlands</td><td><span class="badge allocated">Matthew</span></td></tr><tr><td class="team">Japan</td><td><span class="badge allocated">Kayleigh</span></td></tr><tr><td class="team">Sweden</td><td><span class="badge allocated">Mark</span></td></tr><tr><td class="team">Tunisia</td><td><span class="badge allocated">Jack</span></td></tr></tbody></table>
+    </section><section class="group-card">
+      <h2>Group G</h2>
+      <table><tbody><tr><td class="team">Belgium</td><td><span class="badge allocated">Zach</span></td></tr><tr><td class="team">Egypt</td><td><span class="badge allocated">Joseph</span></td></tr><tr><td class="team">Iran</td><td><span class="badge unallocated">Unallocated</span></td></tr><tr><td class="team">New Zealand</td><td><span class="badge unallocated">Unallocated</span></td></tr></tbody></table>
+    </section><section class="group-card">
+      <h2>Group H</h2>
+      <table><tbody><tr><td class="team">Spain</td><td><span class="badge allocated">Caitlin</span></td></tr><tr><td class="team">Cape Verde</td><td><span class="badge unallocated">Unallocated</span></td></tr><tr><td class="team">Saudi Arabia</td><td><span class="badge unallocated">Unallocated</span></td></tr><tr><td class="team">Uruguay</td><td><span class="badge allocated">Janos</span></td></tr></tbody></table>
+    </section><section class="group-card">
+      <h2>Group I</h2>
+      <table><tbody><tr><td class="team">France</td><td><span class="badge allocated">Callum</span></td></tr><tr><td class="team">Senegal</td><td><span class="badge allocated">Richard</span></td></tr><tr><td class="team">Iraq</td><td><span class="badge unallocated">Unallocated</span></td></tr><tr><td class="team">Norway</td><td><span class="badge allocated">Rob</span></td></tr></tbody></table>
+    </section><section class="group-card">
+      <h2>Group J</h2>
+      <table><tbody><tr><td class="team">Argentina</td><td><span class="badge allocated">Bradley</span></td></tr><tr><td class="team">Algeria</td><td><span class="badge allocated">James</span></td></tr><tr><td class="team">Austria</td><td><span class="badge allocated">Leanne</span></td></tr><tr><td class="team">Jordan</td><td><span class="badge unallocated">Unallocated</span></td></tr></tbody></table>
+    </section><section class="group-card">
+      <h2>Group K</h2>
+      <table><tbody><tr><td class="team">Portugal</td><td><span class="badge allocated">Emily</span></td></tr><tr><td class="team">DR Congo</td><td><span class="badge unallocated">Unallocated</span></td></tr><tr><td class="team">Uzbekistan</td><td><span class="badge unallocated">Unallocated</span></td></tr><tr><td class="team">Colombia</td><td><span class="badge allocated">Kay</span></td></tr></tbody></table>
+    </section><section class="group-card">
+      <h2>Group L</h2>
+      <table><tbody><tr><td class="team">England</td><td><span class="badge allocated">Mark</span></td></tr><tr><td class="team">Croatia</td><td><span class="badge allocated">Glen</span></td></tr><tr><td class="team">Ghana</td><td><span class="badge allocated">Angus</span></td></tr><tr><td class="team">Panama</td><td><span class="badge unallocated">Unallocated</span></td></tr></tbody></table>
+    </section>
+  </div>
+<h2 class="section-title">Live group tables</h2>
+  <p class="small">Tables rank by points, goal difference, goals for, wins, then original group order. Points are calculated as 3 for a win and 1 for a draw.</p>
+  <div class="grid" id="standings-grid">
+
+    <section class="group-card standings-card">
+      <h2>Group A table</h2>
+      <table class="standings-table" id="standings-Group-A">
+        <thead>
+          <tr><th>#</th><th>Team</th><th>Colleague</th><th class="points" title="Points">Pts</th><th>P</th><th>W</th><th>D</th><th>L</th><th>GF</th><th>GA</th><th>GD</th></tr>
+        </thead>
+        <tbody>
+          <tr class="rank-1" data-team="Mexico">
+            <td class="pos">1</td>
+            <td class="team-name"><strong>Mexico</strong></td>
+            <td class="owner-cell"><span class="badge allocated">Luca</span></td>
+            <td class="points"><strong>0</strong></td>
+            <td class="played">0</td>
+            <td class="wins">0</td>
+            <td class="draws">0</td>
+            <td class="losses">0</td>
+            <td class="gf">0</td>
+            <td class="ga">0</td>
+            <td class="gd">0</td>
+          </tr>
+          <tr class="rank-2" data-team="South Africa">
+            <td class="pos">2</td>
+            <td class="team-name"><strong>South Africa</strong></td>
+            <td class="owner-cell"><span class="badge unallocated">Unallocated</span></td>
+            <td class="points"><strong>0</strong></td>
+            <td class="played">0</td>
+            <td class="wins">0</td>
+            <td class="draws">0</td>
+            <td class="losses">0</td>
+            <td class="gf">0</td>
+            <td class="ga">0</td>
+            <td class="gd">0</td>
+          </tr>
+          <tr class="rank-3" data-team="South Korea">
+            <td class="pos">3</td>
+            <td class="team-name"><strong>South Korea</strong></td>
+            <td class="owner-cell"><span class="badge unallocated">Unallocated</span></td>
+            <td class="points"><strong>0</strong></td>
+            <td class="played">0</td>
+            <td class="wins">0</td>
+            <td class="draws">0</td>
+            <td class="losses">0</td>
+            <td class="gf">0</td>
+            <td class="ga">0</td>
+            <td class="gd">0</td>
+          </tr>
+          <tr class="rank-4" data-team="Czech Republic">
+            <td class="pos">4</td>
+            <td class="team-name"><strong>Czech Republic</strong></td>
+            <td class="owner-cell"><span class="badge allocated">Liam</span></td>
+            <td class="points"><strong>0</strong></td>
+            <td class="played">0</td>
+            <td class="wins">0</td>
+            <td class="draws">0</td>
+            <td class="losses">0</td>
+            <td class="gf">0</td>
+            <td class="ga">0</td>
+            <td class="gd">0</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+    <section class="group-card standings-card">
+      <h2>Group B table</h2>
+      <table class="standings-table" id="standings-Group-B">
+        <thead>
+          <tr><th>#</th><th>Team</th><th>Colleague</th><th class="points" title="Points">Pts</th><th>P</th><th>W</th><th>D</th><th>L</th><th>GF</th><th>GA</th><th>GD</th></tr>
+        </thead>
+        <tbody>
+          <tr class="rank-1" data-team="Canada">
+            <td class="pos">1</td>
+            <td class="team-name"><strong>Canada</strong></td>
+            <td class="owner-cell"><span class="badge allocated">Cameron</span></td>
+            <td class="points"><strong>0</strong></td>
+            <td class="played">0</td>
+            <td class="wins">0</td>
+            <td class="draws">0</td>
+            <td class="losses">0</td>
+            <td class="gf">0</td>
+            <td class="ga">0</td>
+            <td class="gd">0</td>
+          </tr>
+          <tr class="rank-2" data-team="Bosnia &amp; Herzegovina">
+            <td class="pos">2</td>
+            <td class="team-name"><strong>Bosnia &amp; Herzegovina</strong></td>
+            <td class="owner-cell"><span class="badge unallocated">Unallocated</span></td>
+            <td class="points"><strong>0</strong></td>
+            <td class="played">0</td>
+            <td class="wins">0</td>
+            <td class="draws">0</td>
+            <td class="losses">0</td>
+            <td class="gf">0</td>
+            <td class="ga">0</td>
+            <td class="gd">0</td>
+          </tr>
+          <tr class="rank-3" data-team="Qatar">
+            <td class="pos">3</td>
+            <td class="team-name"><strong>Qatar</strong></td>
+            <td class="owner-cell"><span class="badge unallocated">Unallocated</span></td>
+            <td class="points"><strong>0</strong></td>
+            <td class="played">0</td>
+            <td class="wins">0</td>
+            <td class="draws">0</td>
+            <td class="losses">0</td>
+            <td class="gf">0</td>
+            <td class="ga">0</td>
+            <td class="gd">0</td>
+          </tr>
+          <tr class="rank-4" data-team="Switzerland">
+            <td class="pos">4</td>
+            <td class="team-name"><strong>Switzerland</strong></td>
+            <td class="owner-cell"><span class="badge allocated">Paul</span></td>
+            <td class="points"><strong>0</strong></td>
+            <td class="played">0</td>
+            <td class="wins">0</td>
+            <td class="draws">0</td>
+            <td class="losses">0</td>
+            <td class="gf">0</td>
+            <td class="ga">0</td>
+            <td class="gd">0</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+    <section class="group-card standings-card">
+      <h2>Group C table</h2>
+      <table class="standings-table" id="standings-Group-C">
+        <thead>
+          <tr><th>#</th><th>Team</th><th>Colleague</th><th class="points" title="Points">Pts</th><th>P</th><th>W</th><th>D</th><th>L</th><th>GF</th><th>GA</th><th>GD</th></tr>
+        </thead>
+        <tbody>
+          <tr class="rank-1" data-team="Brazil">
+            <td class="pos">1</td>
+            <td class="team-name"><strong>Brazil</strong></td>
+            <td class="owner-cell"><span class="badge allocated">Lorraine</span></td>
+            <td class="points"><strong>0</strong></td>
+            <td class="played">0</td>
+            <td class="wins">0</td>
+            <td class="draws">0</td>
+            <td class="losses">0</td>
+            <td class="gf">0</td>
+            <td class="ga">0</td>
+            <td class="gd">0</td>
+          </tr>
+          <tr class="rank-2" data-team="Morocco">
+            <td class="pos">2</td>
+            <td class="team-name"><strong>Morocco</strong></td>
+            <td class="owner-cell"><span class="badge allocated">Leon</span></td>
+            <td class="points"><strong>0</strong></td>
+            <td class="played">0</td>
+            <td class="wins">0</td>
+            <td class="draws">0</td>
+            <td class="losses">0</td>
+            <td class="gf">0</td>
+            <td class="ga">0</td>
+            <td class="gd">0</td>
+          </tr>
+          <tr class="rank-3" data-team="Haiti">
+            <td class="pos">3</td>
+            <td class="team-name"><strong>Haiti</strong></td>
+            <td class="owner-cell"><span class="badge unallocated">Unallocated</span></td>
+            <td class="points"><strong>0</strong></td>
+            <td class="played">0</td>
+            <td class="wins">0</td>
+            <td class="draws">0</td>
+            <td class="losses">0</td>
+            <td class="gf">0</td>
+            <td class="ga">0</td>
+            <td class="gd">0</td>
+          </tr>
+          <tr class="rank-4" data-team="Scotland">
+            <td class="pos">4</td>
+            <td class="team-name"><strong>Scotland</strong></td>
+            <td class="owner-cell"><span class="badge allocated">Mitch</span></td>
+            <td class="points"><strong>0</strong></td>
+            <td class="played">0</td>
+            <td class="wins">0</td>
+            <td class="draws">0</td>
+            <td class="losses">0</td>
+            <td class="gf">0</td>
+            <td class="ga">0</td>
+            <td class="gd">0</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+    <section class="group-card standings-card">
+      <h2>Group D table</h2>
+      <table class="standings-table" id="standings-Group-D">
+        <thead>
+          <tr><th>#</th><th>Team</th><th>Colleague</th><th class="points" title="Points">Pts</th><th>P</th><th>W</th><th>D</th><th>L</th><th>GF</th><th>GA</th><th>GD</th></tr>
+        </thead>
+        <tbody>
+          <tr class="rank-1" data-team="USA">
+            <td class="pos">1</td>
+            <td class="team-name"><strong>USA</strong></td>
+            <td class="owner-cell"><span class="badge allocated">Phil</span></td>
+            <td class="points"><strong>0</strong></td>
+            <td class="played">0</td>
+            <td class="wins">0</td>
+            <td class="draws">0</td>
+            <td class="losses">0</td>
+            <td class="gf">0</td>
+            <td class="ga">0</td>
+            <td class="gd">0</td>
+          </tr>
+          <tr class="rank-2" data-team="Paraguay">
+            <td class="pos">2</td>
+            <td class="team-name"><strong>Paraguay</strong></td>
+            <td class="owner-cell"><span class="badge allocated">Harrison</span></td>
+            <td class="points"><strong>0</strong></td>
+            <td class="played">0</td>
+            <td class="wins">0</td>
+            <td class="draws">0</td>
+            <td class="losses">0</td>
+            <td class="gf">0</td>
+            <td class="ga">0</td>
+            <td class="gd">0</td>
+          </tr>
+          <tr class="rank-3" data-team="Australia">
+            <td class="pos">3</td>
+            <td class="team-name"><strong>Australia</strong></td>
+            <td class="owner-cell"><span class="badge unallocated">Unallocated</span></td>
+            <td class="points"><strong>0</strong></td>
+            <td class="played">0</td>
+            <td class="wins">0</td>
+            <td class="draws">0</td>
+            <td class="losses">0</td>
+            <td class="gf">0</td>
+            <td class="ga">0</td>
+            <td class="gd">0</td>
+          </tr>
+          <tr class="rank-4" data-team="Turkey">
+            <td class="pos">4</td>
+            <td class="team-name"><strong>Turkey</strong></td>
+            <td class="owner-cell"><span class="badge allocated">Andy</span></td>
+            <td class="points"><strong>0</strong></td>
+            <td class="played">0</td>
+            <td class="wins">0</td>
+            <td class="draws">0</td>
+            <td class="losses">0</td>
+            <td class="gf">0</td>
+            <td class="ga">0</td>
+            <td class="gd">0</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+    <section class="group-card standings-card">
+      <h2>Group E table</h2>
+      <table class="standings-table" id="standings-Group-E">
+        <thead>
+          <tr><th>#</th><th>Team</th><th>Colleague</th><th class="points" title="Points">Pts</th><th>P</th><th>W</th><th>D</th><th>L</th><th>GF</th><th>GA</th><th>GD</th></tr>
+        </thead>
+        <tbody>
+          <tr class="rank-1" data-team="Germany">
+            <td class="pos">1</td>
+            <td class="team-name"><strong>Germany</strong></td>
+            <td class="owner-cell"><span class="badge allocated">Elliott</span></td>
+            <td class="points"><strong>0</strong></td>
+            <td class="played">0</td>
+            <td class="wins">0</td>
+            <td class="draws">0</td>
+            <td class="losses">0</td>
+            <td class="gf">0</td>
+            <td class="ga">0</td>
+            <td class="gd">0</td>
+          </tr>
+          <tr class="rank-2" data-team="Curacao">
+            <td class="pos">2</td>
+            <td class="team-name"><strong>Curacao</strong></td>
+            <td class="owner-cell"><span class="badge unallocated">Unallocated</span></td>
+            <td class="points"><strong>0</strong></td>
+            <td class="played">0</td>
+            <td class="wins">0</td>
+            <td class="draws">0</td>
+            <td class="losses">0</td>
+            <td class="gf">0</td>
+            <td class="ga">0</td>
+            <td class="gd">0</td>
+          </tr>
+          <tr class="rank-3" data-team="Ivory Coast">
+            <td class="pos">3</td>
+            <td class="team-name"><strong>Ivory Coast</strong></td>
+            <td class="owner-cell"><span class="badge allocated">Carl</span></td>
+            <td class="points"><strong>0</strong></td>
+            <td class="played">0</td>
+            <td class="wins">0</td>
+            <td class="draws">0</td>
+            <td class="losses">0</td>
+            <td class="gf">0</td>
+            <td class="ga">0</td>
+            <td class="gd">0</td>
+          </tr>
+          <tr class="rank-4" data-team="Ecuador">
+            <td class="pos">4</td>
+            <td class="team-name"><strong>Ecuador</strong></td>
+            <td class="owner-cell"><span class="badge allocated">Jamie</span></td>
+            <td class="points"><strong>0</strong></td>
+            <td class="played">0</td>
+            <td class="wins">0</td>
+            <td class="draws">0</td>
+            <td class="losses">0</td>
+            <td class="gf">0</td>
+            <td class="ga">0</td>
+            <td class="gd">0</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+    <section class="group-card standings-card">
+      <h2>Group F table</h2>
+      <table class="standings-table" id="standings-Group-F">
+        <thead>
+          <tr><th>#</th><th>Team</th><th>Colleague</th><th class="points" title="Points">Pts</th><th>P</th><th>W</th><th>D</th><th>L</th><th>GF</th><th>GA</th><th>GD</th></tr>
+        </thead>
+        <tbody>
+          <tr class="rank-1" data-team="Netherlands">
+            <td class="pos">1</td>
+            <td class="team-name"><strong>Netherlands</strong></td>
+            <td class="owner-cell"><span class="badge allocated">Matthew</span></td>
+            <td class="points"><strong>0</strong></td>
+            <td class="played">0</td>
+            <td class="wins">0</td>
+            <td class="draws">0</td>
+            <td class="losses">0</td>
+            <td class="gf">0</td>
+            <td class="ga">0</td>
+            <td class="gd">0</td>
+          </tr>
+          <tr class="rank-2" data-team="Japan">
+            <td class="pos">2</td>
+            <td class="team-name"><strong>Japan</strong></td>
+            <td class="owner-cell"><span class="badge allocated">Kayleigh</span></td>
+            <td class="points"><strong>0</strong></td>
+            <td class="played">0</td>
+            <td class="wins">0</td>
+            <td class="draws">0</td>
+            <td class="losses">0</td>
+            <td class="gf">0</td>
+            <td class="ga">0</td>
+            <td class="gd">0</td>
+          </tr>
+          <tr class="rank-3" data-team="Sweden">
+            <td class="pos">3</td>
+            <td class="team-name"><strong>Sweden</strong></td>
+            <td class="owner-cell"><span class="badge allocated">Mark</span></td>
+            <td class="points"><strong>0</strong></td>
+            <td class="played">0</td>
+            <td class="wins">0</td>
+            <td class="draws">0</td>
+            <td class="losses">0</td>
+            <td class="gf">0</td>
+            <td class="ga">0</td>
+            <td class="gd">0</td>
+          </tr>
+          <tr class="rank-4" data-team="Tunisia">
+            <td class="pos">4</td>
+            <td class="team-name"><strong>Tunisia</strong></td>
+            <td class="owner-cell"><span class="badge allocated">Jack</span></td>
+            <td class="points"><strong>0</strong></td>
+            <td class="played">0</td>
+            <td class="wins">0</td>
+            <td class="draws">0</td>
+            <td class="losses">0</td>
+            <td class="gf">0</td>
+            <td class="ga">0</td>
+            <td class="gd">0</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+    <section class="group-card standings-card">
+      <h2>Group G table</h2>
+      <table class="standings-table" id="standings-Group-G">
+        <thead>
+          <tr><th>#</th><th>Team</th><th>Colleague</th><th class="points" title="Points">Pts</th><th>P</th><th>W</th><th>D</th><th>L</th><th>GF</th><th>GA</th><th>GD</th></tr>
+        </thead>
+        <tbody>
+          <tr class="rank-1" data-team="Belgium">
+            <td class="pos">1</td>
+            <td class="team-name"><strong>Belgium</strong></td>
+            <td class="owner-cell"><span class="badge allocated">Zach</span></td>
+            <td class="points"><strong>0</strong></td>
+            <td class="played">0</td>
+            <td class="wins">0</td>
+            <td class="draws">0</td>
+            <td class="losses">0</td>
+            <td class="gf">0</td>
+            <td class="ga">0</td>
+            <td class="gd">0</td>
+          </tr>
+          <tr class="rank-2" data-team="Egypt">
+            <td class="pos">2</td>
+            <td class="team-name"><strong>Egypt</strong></td>
+            <td class="owner-cell"><span class="badge allocated">Joseph</span></td>
+            <td class="points"><strong>0</strong></td>
+            <td class="played">0</td>
+            <td class="wins">0</td>
+            <td class="draws">0</td>
+            <td class="losses">0</td>
+            <td class="gf">0</td>
+            <td class="ga">0</td>
+            <td class="gd">0</td>
+          </tr>
+          <tr class="rank-3" data-team="Iran">
+            <td class="pos">3</td>
+            <td class="team-name"><strong>Iran</strong></td>
+            <td class="owner-cell"><span class="badge unallocated">Unallocated</span></td>
+            <td class="points"><strong>0</strong></td>
+            <td class="played">0</td>
+            <td class="wins">0</td>
+            <td class="draws">0</td>
+            <td class="losses">0</td>
+            <td class="gf">0</td>
+            <td class="ga">0</td>
+            <td class="gd">0</td>
+          </tr>
+          <tr class="rank-4" data-team="New Zealand">
+            <td class="pos">4</td>
+            <td class="team-name"><strong>New Zealand</strong></td>
+            <td class="owner-cell"><span class="badge unallocated">Unallocated</span></td>
+            <td class="points"><strong>0</strong></td>
+            <td class="played">0</td>
+            <td class="wins">0</td>
+            <td class="draws">0</td>
+            <td class="losses">0</td>
+            <td class="gf">0</td>
+            <td class="ga">0</td>
+            <td class="gd">0</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+    <section class="group-card standings-card">
+      <h2>Group H table</h2>
+      <table class="standings-table" id="standings-Group-H">
+        <thead>
+          <tr><th>#</th><th>Team</th><th>Colleague</th><th class="points" title="Points">Pts</th><th>P</th><th>W</th><th>D</th><th>L</th><th>GF</th><th>GA</th><th>GD</th></tr>
+        </thead>
+        <tbody>
+          <tr class="rank-1" data-team="Spain">
+            <td class="pos">1</td>
+            <td class="team-name"><strong>Spain</strong></td>
+            <td class="owner-cell"><span class="badge allocated">Caitlin</span></td>
+            <td class="points"><strong>0</strong></td>
+            <td class="played">0</td>
+            <td class="wins">0</td>
+            <td class="draws">0</td>
+            <td class="losses">0</td>
+            <td class="gf">0</td>
+            <td class="ga">0</td>
+            <td class="gd">0</td>
+          </tr>
+          <tr class="rank-2" data-team="Cape Verde">
+            <td class="pos">2</td>
+            <td class="team-name"><strong>Cape Verde</strong></td>
+            <td class="owner-cell"><span class="badge unallocated">Unallocated</span></td>
+            <td class="points"><strong>0</strong></td>
+            <td class="played">0</td>
+            <td class="wins">0</td>
+            <td class="draws">0</td>
+            <td class="losses">0</td>
+            <td class="gf">0</td>
+            <td class="ga">0</td>
+            <td class="gd">0</td>
+          </tr>
+          <tr class="rank-3" data-team="Saudi Arabia">
+            <td class="pos">3</td>
+            <td class="team-name"><strong>Saudi Arabia</strong></td>
+            <td class="owner-cell"><span class="badge unallocated">Unallocated</span></td>
+            <td class="points"><strong>0</strong></td>
+            <td class="played">0</td>
+            <td class="wins">0</td>
+            <td class="draws">0</td>
+            <td class="losses">0</td>
+            <td class="gf">0</td>
+            <td class="ga">0</td>
+            <td class="gd">0</td>
+          </tr>
+          <tr class="rank-4" data-team="Uruguay">
+            <td class="pos">4</td>
+            <td class="team-name"><strong>Uruguay</strong></td>
+            <td class="owner-cell"><span class="badge allocated">Janos</span></td>
+            <td class="points"><strong>0</strong></td>
+            <td class="played">0</td>
+            <td class="wins">0</td>
+            <td class="draws">0</td>
+            <td class="losses">0</td>
+            <td class="gf">0</td>
+            <td class="ga">0</td>
+            <td class="gd">0</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+    <section class="group-card standings-card">
+      <h2>Group I table</h2>
+      <table class="standings-table" id="standings-Group-I">
+        <thead>
+          <tr><th>#</th><th>Team</th><th>Colleague</th><th class="points" title="Points">Pts</th><th>P</th><th>W</th><th>D</th><th>L</th><th>GF</th><th>GA</th><th>GD</th></tr>
+        </thead>
+        <tbody>
+          <tr class="rank-1" data-team="France">
+            <td class="pos">1</td>
+            <td class="team-name"><strong>France</strong></td>
+            <td class="owner-cell"><span class="badge allocated">Callum</span></td>
+            <td class="points"><strong>0</strong></td>
+            <td class="played">0</td>
+            <td class="wins">0</td>
+            <td class="draws">0</td>
+            <td class="losses">0</td>
+            <td class="gf">0</td>
+            <td class="ga">0</td>
+            <td class="gd">0</td>
+          </tr>
+          <tr class="rank-2" data-team="Senegal">
+            <td class="pos">2</td>
+            <td class="team-name"><strong>Senegal</strong></td>
+            <td class="owner-cell"><span class="badge allocated">Richard</span></td>
+            <td class="points"><strong>0</strong></td>
+            <td class="played">0</td>
+            <td class="wins">0</td>
+            <td class="draws">0</td>
+            <td class="losses">0</td>
+            <td class="gf">0</td>
+            <td class="ga">0</td>
+            <td class="gd">0</td>
+          </tr>
+          <tr class="rank-3" data-team="Iraq">
+            <td class="pos">3</td>
+            <td class="team-name"><strong>Iraq</strong></td>
+            <td class="owner-cell"><span class="badge unallocated">Unallocated</span></td>
+            <td class="points"><strong>0</strong></td>
+            <td class="played">0</td>
+            <td class="wins">0</td>
+            <td class="draws">0</td>
+            <td class="losses">0</td>
+            <td class="gf">0</td>
+            <td class="ga">0</td>
+            <td class="gd">0</td>
+          </tr>
+          <tr class="rank-4" data-team="Norway">
+            <td class="pos">4</td>
+            <td class="team-name"><strong>Norway</strong></td>
+            <td class="owner-cell"><span class="badge allocated">Rob</span></td>
+            <td class="points"><strong>0</strong></td>
+            <td class="played">0</td>
+            <td class="wins">0</td>
+            <td class="draws">0</td>
+            <td class="losses">0</td>
+            <td class="gf">0</td>
+            <td class="ga">0</td>
+            <td class="gd">0</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+    <section class="group-card standings-card">
+      <h2>Group J table</h2>
+      <table class="standings-table" id="standings-Group-J">
+        <thead>
+          <tr><th>#</th><th>Team</th><th>Colleague</th><th class="points" title="Points">Pts</th><th>P</th><th>W</th><th>D</th><th>L</th><th>GF</th><th>GA</th><th>GD</th></tr>
+        </thead>
+        <tbody>
+          <tr class="rank-1" data-team="Argentina">
+            <td class="pos">1</td>
+            <td class="team-name"><strong>Argentina</strong></td>
+            <td class="owner-cell"><span class="badge allocated">Bradley</span></td>
+            <td class="points"><strong>0</strong></td>
+            <td class="played">0</td>
+            <td class="wins">0</td>
+            <td class="draws">0</td>
+            <td class="losses">0</td>
+            <td class="gf">0</td>
+            <td class="ga">0</td>
+            <td class="gd">0</td>
+          </tr>
+          <tr class="rank-2" data-team="Algeria">
+            <td class="pos">2</td>
+            <td class="team-name"><strong>Algeria</strong></td>
+            <td class="owner-cell"><span class="badge allocated">James</span></td>
+            <td class="points"><strong>0</strong></td>
+            <td class="played">0</td>
+            <td class="wins">0</td>
+            <td class="draws">0</td>
+            <td class="losses">0</td>
+            <td class="gf">0</td>
+            <td class="ga">0</td>
+            <td class="gd">0</td>
+          </tr>
+          <tr class="rank-3" data-team="Austria">
+            <td class="pos">3</td>
+            <td class="team-name"><strong>Austria</strong></td>
+            <td class="owner-cell"><span class="badge allocated">Leanne</span></td>
+            <td class="points"><strong>0</strong></td>
+            <td class="played">0</td>
+            <td class="wins">0</td>
+            <td class="draws">0</td>
+            <td class="losses">0</td>
+            <td class="gf">0</td>
+            <td class="ga">0</td>
+            <td class="gd">0</td>
+          </tr>
+          <tr class="rank-4" data-team="Jordan">
+            <td class="pos">4</td>
+            <td class="team-name"><strong>Jordan</strong></td>
+            <td class="owner-cell"><span class="badge unallocated">Unallocated</span></td>
+            <td class="points"><strong>0</strong></td>
+            <td class="played">0</td>
+            <td class="wins">0</td>
+            <td class="draws">0</td>
+            <td class="losses">0</td>
+            <td class="gf">0</td>
+            <td class="ga">0</td>
+            <td class="gd">0</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+    <section class="group-card standings-card">
+      <h2>Group K table</h2>
+      <table class="standings-table" id="standings-Group-K">
+        <thead>
+          <tr><th>#</th><th>Team</th><th>Colleague</th><th class="points" title="Points">Pts</th><th>P</th><th>W</th><th>D</th><th>L</th><th>GF</th><th>GA</th><th>GD</th></tr>
+        </thead>
+        <tbody>
+          <tr class="rank-1" data-team="Portugal">
+            <td class="pos">1</td>
+            <td class="team-name"><strong>Portugal</strong></td>
+            <td class="owner-cell"><span class="badge allocated">Emily</span></td>
+            <td class="points"><strong>0</strong></td>
+            <td class="played">0</td>
+            <td class="wins">0</td>
+            <td class="draws">0</td>
+            <td class="losses">0</td>
+            <td class="gf">0</td>
+            <td class="ga">0</td>
+            <td class="gd">0</td>
+          </tr>
+          <tr class="rank-2" data-team="DR Congo">
+            <td class="pos">2</td>
+            <td class="team-name"><strong>DR Congo</strong></td>
+            <td class="owner-cell"><span class="badge unallocated">Unallocated</span></td>
+            <td class="points"><strong>0</strong></td>
+            <td class="played">0</td>
+            <td class="wins">0</td>
+            <td class="draws">0</td>
+            <td class="losses">0</td>
+            <td class="gf">0</td>
+            <td class="ga">0</td>
+            <td class="gd">0</td>
+          </tr>
+          <tr class="rank-3" data-team="Uzbekistan">
+            <td class="pos">3</td>
+            <td class="team-name"><strong>Uzbekistan</strong></td>
+            <td class="owner-cell"><span class="badge unallocated">Unallocated</span></td>
+            <td class="points"><strong>0</strong></td>
+            <td class="played">0</td>
+            <td class="wins">0</td>
+            <td class="draws">0</td>
+            <td class="losses">0</td>
+            <td class="gf">0</td>
+            <td class="ga">0</td>
+            <td class="gd">0</td>
+          </tr>
+          <tr class="rank-4" data-team="Colombia">
+            <td class="pos">4</td>
+            <td class="team-name"><strong>Colombia</strong></td>
+            <td class="owner-cell"><span class="badge allocated">Kay</span></td>
+            <td class="points"><strong>0</strong></td>
+            <td class="played">0</td>
+            <td class="wins">0</td>
+            <td class="draws">0</td>
+            <td class="losses">0</td>
+            <td class="gf">0</td>
+            <td class="ga">0</td>
+            <td class="gd">0</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+    <section class="group-card standings-card">
+      <h2>Group L table</h2>
+      <table class="standings-table" id="standings-Group-L">
+        <thead>
+          <tr><th>#</th><th>Team</th><th>Colleague</th><th class="points" title="Points">Pts</th><th>P</th><th>W</th><th>D</th><th>L</th><th>GF</th><th>GA</th><th>GD</th></tr>
+        </thead>
+        <tbody>
+          <tr class="rank-1" data-team="England">
+            <td class="pos">1</td>
+            <td class="team-name"><strong>England</strong></td>
+            <td class="owner-cell"><span class="badge allocated">Mark</span></td>
+            <td class="points"><strong>0</strong></td>
+            <td class="played">0</td>
+            <td class="wins">0</td>
+            <td class="draws">0</td>
+            <td class="losses">0</td>
+            <td class="gf">0</td>
+            <td class="ga">0</td>
+            <td class="gd">0</td>
+          </tr>
+          <tr class="rank-2" data-team="Croatia">
+            <td class="pos">2</td>
+            <td class="team-name"><strong>Croatia</strong></td>
+            <td class="owner-cell"><span class="badge allocated">Glen</span></td>
+            <td class="points"><strong>0</strong></td>
+            <td class="played">0</td>
+            <td class="wins">0</td>
+            <td class="draws">0</td>
+            <td class="losses">0</td>
+            <td class="gf">0</td>
+            <td class="ga">0</td>
+            <td class="gd">0</td>
+          </tr>
+          <tr class="rank-3" data-team="Ghana">
+            <td class="pos">3</td>
+            <td class="team-name"><strong>Ghana</strong></td>
+            <td class="owner-cell"><span class="badge allocated">Angus</span></td>
+            <td class="points"><strong>0</strong></td>
+            <td class="played">0</td>
+            <td class="wins">0</td>
+            <td class="draws">0</td>
+            <td class="losses">0</td>
+            <td class="gf">0</td>
+            <td class="ga">0</td>
+            <td class="gd">0</td>
+          </tr>
+          <tr class="rank-4" data-team="Panama">
+            <td class="pos">4</td>
+            <td class="team-name"><strong>Panama</strong></td>
+            <td class="owner-cell"><span class="badge unallocated">Unallocated</span></td>
+            <td class="points"><strong>0</strong></td>
+            <td class="played">0</td>
+            <td class="wins">0</td>
+            <td class="draws">0</td>
+            <td class="losses">0</td>
+            <td class="gf">0</td>
+            <td class="ga">0</td>
+            <td class="gd">0</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  </div>
+
+  <h2 class="section-title">Group stage fixtures</h2>
+  <p class="small">Enter the two scores for each fixture. Winners and group tables update automatically.</p>
+  <div class="controls">
+    <button type="button" id="recalcBtn">Recalculate tables</button>
+    <button type="button" class="secondary" id="clearNotesBtn">Clear notes</button>
+    <button type="button" class="warning" id="clearScoresBtn">Clear all scores</button>
+  </div>
+  <div class="wall-wrap">
+    <table class="wall-table" id="fixture-table">
+      <thead>
+        <tr><th>Match</th><th>Date</th><th>UK</th><th>Group</th><th>Team 1</th><th colspan="2">Score</th><th>Team 2</th><th>Venue</th><th>Winner</th><th>Notes</th></tr>
+      </thead>
+      <tbody>
+        <tr data-match="G01">
+      <td>G01</td>
+      <td>Thu 11 Jun 2026</td>
+      <td>20:00</td>
+      <td>Group A</td>
+      <td><strong>Mexico</strong><br><span class="badge allocated">Luca</span></td>
+      <td class="score-cell"><input class="score-input" id="G01-s1" type="number" min="0" step="1" inputmode="numeric" aria-label="G01 Mexico score"></td>
+      <td class="score-cell"><input class="score-input" id="G01-s2" type="number" min="0" step="1" inputmode="numeric" aria-label="G01 South Africa score"></td>
+      <td><strong>South Africa</strong><br><span class="badge unallocated">Unallocated</span></td>
+      <td>Mexico City, Mexico</td>
+      <td class="winner-cell" id="winner-G01"></td>
+      <td><input class="note-input" id="note-G01" type="text" aria-label="G01 note"></td>
+    </tr><tr data-match="G02">
+      <td>G02</td>
+      <td>Fri 12 Jun 2026</td>
+      <td>03:00</td>
+      <td>Group A</td>
+      <td><strong>South Korea</strong><br><span class="badge unallocated">Unallocated</span></td>
+      <td class="score-cell"><input class="score-input" id="G02-s1" type="number" min="0" step="1" inputmode="numeric" aria-label="G02 South Korea score"></td>
+      <td class="score-cell"><input class="score-input" id="G02-s2" type="number" min="0" step="1" inputmode="numeric" aria-label="G02 Czech Republic score"></td>
+      <td><strong>Czech Republic</strong><br><span class="badge allocated">Liam</span></td>
+      <td>Zapopan, Mexico</td>
+      <td class="winner-cell" id="winner-G02"></td>
+      <td><input class="note-input" id="note-G02" type="text" aria-label="G02 note"></td>
+    </tr><tr data-match="G03">
+      <td>G03</td>
+      <td>Fri 12 Jun 2026</td>
+      <td>20:00</td>
+      <td>Group B</td>
+      <td><strong>Canada</strong><br><span class="badge allocated">Cameron</span></td>
+      <td class="score-cell"><input class="score-input" id="G03-s1" type="number" min="0" step="1" inputmode="numeric" aria-label="G03 Canada score"></td>
+      <td class="score-cell"><input class="score-input" id="G03-s2" type="number" min="0" step="1" inputmode="numeric" aria-label="G03 Bosnia &amp; Herzegovina score"></td>
+      <td><strong>Bosnia &amp; Herzegovina</strong><br><span class="badge unallocated">Unallocated</span></td>
+      <td>Toronto, Canada</td>
+      <td class="winner-cell" id="winner-G03"></td>
+      <td><input class="note-input" id="note-G03" type="text" aria-label="G03 note"></td>
+    </tr><tr data-match="G04">
+      <td>G04</td>
+      <td>Sat 13 Jun 2026</td>
+      <td>02:00</td>
+      <td>Group D</td>
+      <td><strong>USA</strong><br><span class="badge allocated">Phil</span></td>
+      <td class="score-cell"><input class="score-input" id="G04-s1" type="number" min="0" step="1" inputmode="numeric" aria-label="G04 USA score"></td>
+      <td class="score-cell"><input class="score-input" id="G04-s2" type="number" min="0" step="1" inputmode="numeric" aria-label="G04 Paraguay score"></td>
+      <td><strong>Paraguay</strong><br><span class="badge allocated">Harrison</span></td>
+      <td>Los Angeles, USA</td>
+      <td class="winner-cell" id="winner-G04"></td>
+      <td><input class="note-input" id="note-G04" type="text" aria-label="G04 note"></td>
+    </tr><tr data-match="G05">
+      <td>G05</td>
+      <td>Sat 13 Jun 2026</td>
+      <td>20:00</td>
+      <td>Group B</td>
+      <td><strong>Qatar</strong><br><span class="badge unallocated">Unallocated</span></td>
+      <td class="score-cell"><input class="score-input" id="G05-s1" type="number" min="0" step="1" inputmode="numeric" aria-label="G05 Qatar score"></td>
+      <td class="score-cell"><input class="score-input" id="G05-s2" type="number" min="0" step="1" inputmode="numeric" aria-label="G05 Switzerland score"></td>
+      <td><strong>Switzerland</strong><br><span class="badge allocated">Paul</span></td>
+      <td>Santa Clara, USA</td>
+      <td class="winner-cell" id="winner-G05"></td>
+      <td><input class="note-input" id="note-G05" type="text" aria-label="G05 note"></td>
+    </tr><tr data-match="G06">
+      <td>G06</td>
+      <td>Sat 13 Jun 2026</td>
+      <td>23:00</td>
+      <td>Group C</td>
+      <td><strong>Brazil</strong><br><span class="badge allocated">Lorraine</span></td>
+      <td class="score-cell"><input class="score-input" id="G06-s1" type="number" min="0" step="1" inputmode="numeric" aria-label="G06 Brazil score"></td>
+      <td class="score-cell"><input class="score-input" id="G06-s2" type="number" min="0" step="1" inputmode="numeric" aria-label="G06 Morocco score"></td>
+      <td><strong>Morocco</strong><br><span class="badge allocated">Leon</span></td>
+      <td>New Jersey, USA</td>
+      <td class="winner-cell" id="winner-G06"></td>
+      <td><input class="note-input" id="note-G06" type="text" aria-label="G06 note"></td>
+    </tr><tr data-match="G07">
+      <td>G07</td>
+      <td>Sun 14 Jun 2026</td>
+      <td>02:00</td>
+      <td>Group C</td>
+      <td><strong>Haiti</strong><br><span class="badge unallocated">Unallocated</span></td>
+      <td class="score-cell"><input class="score-input" id="G07-s1" type="number" min="0" step="1" inputmode="numeric" aria-label="G07 Haiti score"></td>
+      <td class="score-cell"><input class="score-input" id="G07-s2" type="number" min="0" step="1" inputmode="numeric" aria-label="G07 Scotland score"></td>
+      <td><strong>Scotland</strong><br><span class="badge allocated">Mitch</span></td>
+      <td>Foxborough, USA</td>
+      <td class="winner-cell" id="winner-G07"></td>
+      <td><input class="note-input" id="note-G07" type="text" aria-label="G07 note"></td>
+    </tr><tr data-match="G08">
+      <td>G08</td>
+      <td>Sun 14 Jun 2026</td>
+      <td>05:00</td>
+      <td>Group D</td>
+      <td><strong>Australia</strong><br><span class="badge unallocated">Unallocated</span></td>
+      <td class="score-cell"><input class="score-input" id="G08-s1" type="number" min="0" step="1" inputmode="numeric" aria-label="G08 Australia score"></td>
+      <td class="score-cell"><input class="score-input" id="G08-s2" type="number" min="0" step="1" inputmode="numeric" aria-label="G08 Turkey score"></td>
+      <td><strong>Turkey</strong><br><span class="badge allocated">Andy</span></td>
+      <td>Vancouver, Canada</td>
+      <td class="winner-cell" id="winner-G08"></td>
+      <td><input class="note-input" id="note-G08" type="text" aria-label="G08 note"></td>
+    </tr><tr data-match="G09">
+      <td>G09</td>
+      <td>Sun 14 Jun 2026</td>
+      <td>18:00</td>
+      <td>Group E</td>
+      <td><strong>Germany</strong><br><span class="badge allocated">Elliott</span></td>
+      <td class="score-cell"><input class="score-input" id="G09-s1" type="number" min="0" step="1" inputmode="numeric" aria-label="G09 Germany score"></td>
+      <td class="score-cell"><input class="score-input" id="G09-s2" type="number" min="0" step="1" inputmode="numeric" aria-label="G09 Curacao score"></td>
+      <td><strong>Curacao</strong><br><span class="badge unallocated">Unallocated</span></td>
+      <td>Houston, USA</td>
+      <td class="winner-cell" id="winner-G09"></td>
+      <td><input class="note-input" id="note-G09" type="text" aria-label="G09 note"></td>
+    </tr><tr data-match="G10">
+      <td>G10</td>
+      <td>Sun 14 Jun 2026</td>
+      <td>21:00</td>
+      <td>Group F</td>
+      <td><strong>Netherlands</strong><br><span class="badge allocated">Matthew</span></td>
+      <td class="score-cell"><input class="score-input" id="G10-s1" type="number" min="0" step="1" inputmode="numeric" aria-label="G10 Netherlands score"></td>
+      <td class="score-cell"><input class="score-input" id="G10-s2" type="number" min="0" step="1" inputmode="numeric" aria-label="G10 Japan score"></td>
+      <td><strong>Japan</strong><br><span class="badge allocated">Kayleigh</span></td>
+      <td>Arlington, USA</td>
+      <td class="winner-cell" id="winner-G10"></td>
+      <td><input class="note-input" id="note-G10" type="text" aria-label="G10 note"></td>
+    </tr><tr data-match="G11">
+      <td>G11</td>
+      <td>Mon 15 Jun 2026</td>
+      <td>00:00</td>
+      <td>Group E</td>
+      <td><strong>Ivory Coast</strong><br><span class="badge allocated">Carl</span></td>
+      <td class="score-cell"><input class="score-input" id="G11-s1" type="number" min="0" step="1" inputmode="numeric" aria-label="G11 Ivory Coast score"></td>
+      <td class="score-cell"><input class="score-input" id="G11-s2" type="number" min="0" step="1" inputmode="numeric" aria-label="G11 Ecuador score"></td>
+      <td><strong>Ecuador</strong><br><span class="badge allocated">Jamie</span></td>
+      <td>Philadelphia, USA</td>
+      <td class="winner-cell" id="winner-G11"></td>
+      <td><input class="note-input" id="note-G11" type="text" aria-label="G11 note"></td>
+    </tr><tr data-match="G12">
+      <td>G12</td>
+      <td>Mon 15 Jun 2026</td>
+      <td>03:00</td>
+      <td>Group F</td>
+      <td><strong>Sweden</strong><br><span class="badge allocated">Mark</span></td>
+      <td class="score-cell"><input class="score-input" id="G12-s1" type="number" min="0" step="1" inputmode="numeric" aria-label="G12 Sweden score"></td>
+      <td class="score-cell"><input class="score-input" id="G12-s2" type="number" min="0" step="1" inputmode="numeric" aria-label="G12 Tunisia score"></td>
+      <td><strong>Tunisia</strong><br><span class="badge allocated">Jack</span></td>
+      <td>Guadalupe, Mexico</td>
+      <td class="winner-cell" id="winner-G12"></td>
+      <td><input class="note-input" id="note-G12" type="text" aria-label="G12 note"></td>
+    </tr><tr data-match="G13">
+      <td>G13</td>
+      <td>Mon 15 Jun 2026</td>
+      <td>17:00</td>
+      <td>Group H</td>
+      <td><strong>Spain</strong><br><span class="badge allocated">Caitlin</span></td>
+      <td class="score-cell"><input class="score-input" id="G13-s1" type="number" min="0" step="1" inputmode="numeric" aria-label="G13 Spain score"></td>
+      <td class="score-cell"><input class="score-input" id="G13-s2" type="number" min="0" step="1" inputmode="numeric" aria-label="G13 Cape Verde score"></td>
+      <td><strong>Cape Verde</strong><br><span class="badge unallocated">Unallocated</span></td>
+      <td>Atlanta, USA</td>
+      <td class="winner-cell" id="winner-G13"></td>
+      <td><input class="note-input" id="note-G13" type="text" aria-label="G13 note"></td>
+    </tr><tr data-match="G14">
+      <td>G14</td>
+      <td>Mon 15 Jun 2026</td>
+      <td>20:00</td>
+      <td>Group G</td>
+      <td><strong>Belgium</strong><br><span class="badge allocated">Zach</span></td>
+      <td class="score-cell"><input class="score-input" id="G14-s1" type="number" min="0" step="1" inputmode="numeric" aria-label="G14 Belgium score"></td>
+      <td class="score-cell"><input class="score-input" id="G14-s2" type="number" min="0" step="1" inputmode="numeric" aria-label="G14 Egypt score"></td>
+      <td><strong>Egypt</strong><br><span class="badge allocated">Joseph</span></td>
+      <td>Seattle, USA</td>
+      <td class="winner-cell" id="winner-G14"></td>
+      <td><input class="note-input" id="note-G14" type="text" aria-label="G14 note"></td>
+    </tr><tr data-match="G15">
+      <td>G15</td>
+      <td>Mon 15 Jun 2026</td>
+      <td>23:00</td>
+      <td>Group H</td>
+      <td><strong>Saudi Arabia</strong><br><span class="badge unallocated">Unallocated</span></td>
+      <td class="score-cell"><input class="score-input" id="G15-s1" type="number" min="0" step="1" inputmode="numeric" aria-label="G15 Saudi Arabia score"></td>
+      <td class="score-cell"><input class="score-input" id="G15-s2" type="number" min="0" step="1" inputmode="numeric" aria-label="G15 Uruguay score"></td>
+      <td><strong>Uruguay</strong><br><span class="badge allocated">Janos</span></td>
+      <td>Miami, USA</td>
+      <td class="winner-cell" id="winner-G15"></td>
+      <td><input class="note-input" id="note-G15" type="text" aria-label="G15 note"></td>
+    </tr><tr data-match="G16">
+      <td>G16</td>
+      <td>Tue 16 Jun 2026</td>
+      <td>02:00</td>
+      <td>Group G</td>
+      <td><strong>Iran</strong><br><span class="badge unallocated">Unallocated</span></td>
+      <td class="score-cell"><input class="score-input" id="G16-s1" type="number" min="0" step="1" inputmode="numeric" aria-label="G16 Iran score"></td>
+      <td class="score-cell"><input class="score-input" id="G16-s2" type="number" min="0" step="1" inputmode="numeric" aria-label="G16 New Zealand score"></td>
+      <td><strong>New Zealand</strong><br><span class="badge unallocated">Unallocated</span></td>
+      <td>Los Angeles, USA</td>
+      <td class="winner-cell" id="winner-G16"></td>
+      <td><input class="note-input" id="note-G16" type="text" aria-label="G16 note"></td>
+    </tr><tr data-match="G17">
+      <td>G17</td>
+      <td>Tue 16 Jun 2026</td>
+      <td>20:00</td>
+      <td>Group I</td>
+      <td><strong>France</strong><br><span class="badge allocated">Callum</span></td>
+      <td class="score-cell"><input class="score-input" id="G17-s1" type="number" min="0" step="1" inputmode="numeric" aria-label="G17 France score"></td>
+      <td class="score-cell"><input class="score-input" id="G17-s2" type="number" min="0" step="1" inputmode="numeric" aria-label="G17 Senegal score"></td>
+      <td><strong>Senegal</strong><br><span class="badge allocated">Richard</span></td>
+      <td>New Jersey, USA</td>
+      <td class="winner-cell" id="winner-G17"></td>
+      <td><input class="note-input" id="note-G17" type="text" aria-label="G17 note"></td>
+    </tr><tr data-match="G18">
+      <td>G18</td>
+      <td>Tue 16 Jun 2026</td>
+      <td>23:00</td>
+      <td>Group I</td>
+      <td><strong>Iraq</strong><br><span class="badge unallocated">Unallocated</span></td>
+      <td class="score-cell"><input class="score-input" id="G18-s1" type="number" min="0" step="1" inputmode="numeric" aria-label="G18 Iraq score"></td>
+      <td class="score-cell"><input class="score-input" id="G18-s2" type="number" min="0" step="1" inputmode="numeric" aria-label="G18 Norway score"></td>
+      <td><strong>Norway</strong><br><span class="badge allocated">Rob</span></td>
+      <td>Foxborough, USA</td>
+      <td class="winner-cell" id="winner-G18"></td>
+      <td><input class="note-input" id="note-G18" type="text" aria-label="G18 note"></td>
+    </tr><tr data-match="G19">
+      <td>G19</td>
+      <td>Wed 17 Jun 2026</td>
+      <td>02:00</td>
+      <td>Group J</td>
+      <td><strong>Argentina</strong><br><span class="badge allocated">Bradley</span></td>
+      <td class="score-cell"><input class="score-input" id="G19-s1" type="number" min="0" step="1" inputmode="numeric" aria-label="G19 Argentina score"></td>
+      <td class="score-cell"><input class="score-input" id="G19-s2" type="number" min="0" step="1" inputmode="numeric" aria-label="G19 Algeria score"></td>
+      <td><strong>Algeria</strong><br><span class="badge allocated">James</span></td>
+      <td>Kansas City, USA</td>
+      <td class="winner-cell" id="winner-G19"></td>
+      <td><input class="note-input" id="note-G19" type="text" aria-label="G19 note"></td>
+    </tr><tr data-match="G20">
+      <td>G20</td>
+      <td>Wed 17 Jun 2026</td>
+      <td>05:00</td>
+      <td>Group J</td>
+      <td><strong>Austria</strong><br><span class="badge allocated">Leanne</span></td>
+      <td class="score-cell"><input class="score-input" id="G20-s1" type="number" min="0" step="1" inputmode="numeric" aria-label="G20 Austria score"></td>
+      <td class="score-cell"><input class="score-input" id="G20-s2" type="number" min="0" step="1" inputmode="numeric" aria-label="G20 Jordan score"></td>
+      <td><strong>Jordan</strong><br><span class="badge unallocated">Unallocated</span></td>
+      <td>Santa Clara, USA</td>
+      <td class="winner-cell" id="winner-G20"></td>
+      <td><input class="note-input" id="note-G20" type="text" aria-label="G20 note"></td>
+    </tr><tr data-match="G21">
+      <td>G21</td>
+      <td>Wed 17 Jun 2026</td>
+      <td>18:00</td>
+      <td>Group K</td>
+      <td><strong>Portugal</strong><br><span class="badge allocated">Emily</span></td>
+      <td class="score-cell"><input class="score-input" id="G21-s1" type="number" min="0" step="1" inputmode="numeric" aria-label="G21 Portugal score"></td>
+      <td class="score-cell"><input class="score-input" id="G21-s2" type="number" min="0" step="1" inputmode="numeric" aria-label="G21 DR Congo score"></td>
+      <td><strong>DR Congo</strong><br><span class="badge unallocated">Unallocated</span></td>
+      <td>Houston, USA</td>
+      <td class="winner-cell" id="winner-G21"></td>
+      <td><input class="note-input" id="note-G21" type="text" aria-label="G21 note"></td>
+    </tr><tr data-match="G22">
+      <td>G22</td>
+      <td>Wed 17 Jun 2026</td>
+      <td>21:00</td>
+      <td>Group L</td>
+      <td><strong>England</strong><br><span class="badge allocated">Mark</span></td>
+      <td class="score-cell"><input class="score-input" id="G22-s1" type="number" min="0" step="1" inputmode="numeric" aria-label="G22 England score"></td>
+      <td class="score-cell"><input class="score-input" id="G22-s2" type="number" min="0" step="1" inputmode="numeric" aria-label="G22 Croatia score"></td>
+      <td><strong>Croatia</strong><br><span class="badge allocated">Glen</span></td>
+      <td>Arlington, USA</td>
+      <td class="winner-cell" id="winner-G22"></td>
+      <td><input class="note-input" id="note-G22" type="text" aria-label="G22 note"></td>
+    </tr><tr data-match="G23">
+      <td>G23</td>
+      <td>Thu 18 Jun 2026</td>
+      <td>00:00</td>
+      <td>Group L</td>
+      <td><strong>Ghana</strong><br><span class="badge allocated">Angus</span></td>
+      <td class="score-cell"><input class="score-input" id="G23-s1" type="number" min="0" step="1" inputmode="numeric" aria-label="G23 Ghana score"></td>
+      <td class="score-cell"><input class="score-input" id="G23-s2" type="number" min="0" step="1" inputmode="numeric" aria-label="G23 Panama score"></td>
+      <td><strong>Panama</strong><br><span class="badge unallocated">Unallocated</span></td>
+      <td>Toronto, Canada</td>
+      <td class="winner-cell" id="winner-G23"></td>
+      <td><input class="note-input" id="note-G23" type="text" aria-label="G23 note"></td>
+    </tr><tr data-match="G24">
+      <td>G24</td>
+      <td>Thu 18 Jun 2026</td>
+      <td>03:00</td>
+      <td>Group K</td>
+      <td><strong>Uzbekistan</strong><br><span class="badge unallocated">Unallocated</span></td>
+      <td class="score-cell"><input class="score-input" id="G24-s1" type="number" min="0" step="1" inputmode="numeric" aria-label="G24 Uzbekistan score"></td>
+      <td class="score-cell"><input class="score-input" id="G24-s2" type="number" min="0" step="1" inputmode="numeric" aria-label="G24 Colombia score"></td>
+      <td><strong>Colombia</strong><br><span class="badge allocated">Kay</span></td>
+      <td>Mexico City, Mexico</td>
+      <td class="winner-cell" id="winner-G24"></td>
+      <td><input class="note-input" id="note-G24" type="text" aria-label="G24 note"></td>
+    </tr><tr data-match="G25">
+      <td>G25</td>
+      <td>Thu 18 Jun 2026</td>
+      <td>17:00</td>
+      <td>Group A</td>
+      <td><strong>Czech Republic</strong><br><span class="badge allocated">Liam</span></td>
+      <td class="score-cell"><input class="score-input" id="G25-s1" type="number" min="0" step="1" inputmode="numeric" aria-label="G25 Czech Republic score"></td>
+      <td class="score-cell"><input class="score-input" id="G25-s2" type="number" min="0" step="1" inputmode="numeric" aria-label="G25 South Africa score"></td>
+      <td><strong>South Africa</strong><br><span class="badge unallocated">Unallocated</span></td>
+      <td>Atlanta, USA</td>
+      <td class="winner-cell" id="winner-G25"></td>
+      <td><input class="note-input" id="note-G25" type="text" aria-label="G25 note"></td>
+    </tr><tr data-match="G26">
+      <td>G26</td>
+      <td>Thu 18 Jun 2026</td>
+      <td>20:00</td>
+      <td>Group B</td>
+      <td><strong>Switzerland</strong><br><span class="badge allocated">Paul</span></td>
+      <td class="score-cell"><input class="score-input" id="G26-s1" type="number" min="0" step="1" inputmode="numeric" aria-label="G26 Switzerland score"></td>
+      <td class="score-cell"><input class="score-input" id="G26-s2" type="number" min="0" step="1" inputmode="numeric" aria-label="G26 Bosnia &amp; Herzegovina score"></td>
+      <td><strong>Bosnia &amp; Herzegovina</strong><br><span class="badge unallocated">Unallocated</span></td>
+      <td>Los Angeles, USA</td>
+      <td class="winner-cell" id="winner-G26"></td>
+      <td><input class="note-input" id="note-G26" type="text" aria-label="G26 note"></td>
+    </tr><tr data-match="G27">
+      <td>G27</td>
+      <td>Thu 18 Jun 2026</td>
+      <td>23:00</td>
+      <td>Group B</td>
+      <td><strong>Canada</strong><br><span class="badge allocated">Cameron</span></td>
+      <td class="score-cell"><input class="score-input" id="G27-s1" type="number" min="0" step="1" inputmode="numeric" aria-label="G27 Canada score"></td>
+      <td class="score-cell"><input class="score-input" id="G27-s2" type="number" min="0" step="1" inputmode="numeric" aria-label="G27 Qatar score"></td>
+      <td><strong>Qatar</strong><br><span class="badge unallocated">Unallocated</span></td>
+      <td>Vancouver, Canada</td>
+      <td class="winner-cell" id="winner-G27"></td>
+      <td><input class="note-input" id="note-G27" type="text" aria-label="G27 note"></td>
+    </tr><tr data-match="G28">
+      <td>G28</td>
+      <td>Fri 19 Jun 2026</td>
+      <td>02:00</td>
+      <td>Group A</td>
+      <td><strong>Mexico</strong><br><span class="badge allocated">Luca</span></td>
+      <td class="score-cell"><input class="score-input" id="G28-s1" type="number" min="0" step="1" inputmode="numeric" aria-label="G28 Mexico score"></td>
+      <td class="score-cell"><input class="score-input" id="G28-s2" type="number" min="0" step="1" inputmode="numeric" aria-label="G28 South Korea score"></td>
+      <td><strong>South Korea</strong><br><span class="badge unallocated">Unallocated</span></td>
+      <td>Zapopan, Mexico</td>
+      <td class="winner-cell" id="winner-G28"></td>
+      <td><input class="note-input" id="note-G28" type="text" aria-label="G28 note"></td>
+    </tr><tr data-match="G29">
+      <td>G29</td>
+      <td>Fri 19 Jun 2026</td>
+      <td>20:00</td>
+      <td>Group D</td>
+      <td><strong>USA</strong><br><span class="badge allocated">Phil</span></td>
+      <td class="score-cell"><input class="score-input" id="G29-s1" type="number" min="0" step="1" inputmode="numeric" aria-label="G29 USA score"></td>
+      <td class="score-cell"><input class="score-input" id="G29-s2" type="number" min="0" step="1" inputmode="numeric" aria-label="G29 Australia score"></td>
+      <td><strong>Australia</strong><br><span class="badge unallocated">Unallocated</span></td>
+      <td>Seattle, USA</td>
+      <td class="winner-cell" id="winner-G29"></td>
+      <td><input class="note-input" id="note-G29" type="text" aria-label="G29 note"></td>
+    </tr><tr data-match="G30">
+      <td>G30</td>
+      <td>Fri 19 Jun 2026</td>
+      <td>23:00</td>
+      <td>Group C</td>
+      <td><strong>Scotland</strong><br><span class="badge allocated">Mitch</span></td>
+      <td class="score-cell"><input class="score-input" id="G30-s1" type="number" min="0" step="1" inputmode="numeric" aria-label="G30 Scotland score"></td>
+      <td class="score-cell"><input class="score-input" id="G30-s2" type="number" min="0" step="1" inputmode="numeric" aria-label="G30 Morocco score"></td>
+      <td><strong>Morocco</strong><br><span class="badge allocated">Leon</span></td>
+      <td>Foxborough, USA</td>
+      <td class="winner-cell" id="winner-G30"></td>
+      <td><input class="note-input" id="note-G30" type="text" aria-label="G30 note"></td>
+    </tr><tr data-match="G31">
+      <td>G31</td>
+      <td>Sat 20 Jun 2026</td>
+      <td>01:30</td>
+      <td>Group C</td>
+      <td><strong>Brazil</strong><br><span class="badge allocated">Lorraine</span></td>
+      <td class="score-cell"><input class="score-input" id="G31-s1" type="number" min="0" step="1" inputmode="numeric" aria-label="G31 Brazil score"></td>
+      <td class="score-cell"><input class="score-input" id="G31-s2" type="number" min="0" step="1" inputmode="numeric" aria-label="G31 Haiti score"></td>
+      <td><strong>Haiti</strong><br><span class="badge unallocated">Unallocated</span></td>
+      <td>Philadelphia, USA</td>
+      <td class="winner-cell" id="winner-G31"></td>
+      <td><input class="note-input" id="note-G31" type="text" aria-label="G31 note"></td>
+    </tr><tr data-match="G32">
+      <td>G32</td>
+      <td>Sat 20 Jun 2026</td>
+      <td>04:00</td>
+      <td>Group D</td>
+      <td><strong>Turkey</strong><br><span class="badge allocated">Andy</span></td>
+      <td class="score-cell"><input class="score-input" id="G32-s1" type="number" min="0" step="1" inputmode="numeric" aria-label="G32 Turkey score"></td>
+      <td class="score-cell"><input class="score-input" id="G32-s2" type="number" min="0" step="1" inputmode="numeric" aria-label="G32 Paraguay score"></td>
+      <td><strong>Paraguay</strong><br><span class="badge allocated">Harrison</span></td>
+      <td>Santa Clara, USA</td>
+      <td class="winner-cell" id="winner-G32"></td>
+      <td><input class="note-input" id="note-G32" type="text" aria-label="G32 note"></td>
+    </tr><tr data-match="G33">
+      <td>G33</td>
+      <td>Sat 20 Jun 2026</td>
+      <td>18:00</td>
+      <td>Group F</td>
+      <td><strong>Netherlands</strong><br><span class="badge allocated">Matthew</span></td>
+      <td class="score-cell"><input class="score-input" id="G33-s1" type="number" min="0" step="1" inputmode="numeric" aria-label="G33 Netherlands score"></td>
+      <td class="score-cell"><input class="score-input" id="G33-s2" type="number" min="0" step="1" inputmode="numeric" aria-label="G33 Sweden score"></td>
+      <td><strong>Sweden</strong><br><span class="badge allocated">Mark</span></td>
+      <td>Houston, USA</td>
+      <td class="winner-cell" id="winner-G33"></td>
+      <td><input class="note-input" id="note-G33" type="text" aria-label="G33 note"></td>
+    </tr><tr data-match="G34">
+      <td>G34</td>
+      <td>Sat 20 Jun 2026</td>
+      <td>21:00</td>
+      <td>Group E</td>
+      <td><strong>Germany</strong><br><span class="badge allocated">Elliott</span></td>
+      <td class="score-cell"><input class="score-input" id="G34-s1" type="number" min="0" step="1" inputmode="numeric" aria-label="G34 Germany score"></td>
+      <td class="score-cell"><input class="score-input" id="G34-s2" type="number" min="0" step="1" inputmode="numeric" aria-label="G34 Ivory Coast score"></td>
+      <td><strong>Ivory Coast</strong><br><span class="badge allocated">Carl</span></td>
+      <td>Toronto, Canada</td>
+      <td class="winner-cell" id="winner-G34"></td>
+      <td><input class="note-input" id="note-G34" type="text" aria-label="G34 note"></td>
+    </tr><tr data-match="G35">
+      <td>G35</td>
+      <td>Sun 21 Jun 2026</td>
+      <td>01:00</td>
+      <td>Group E</td>
+      <td><strong>Ecuador</strong><br><span class="badge allocated">Jamie</span></td>
+      <td class="score-cell"><input class="score-input" id="G35-s1" type="number" min="0" step="1" inputmode="numeric" aria-label="G35 Ecuador score"></td>
+      <td class="score-cell"><input class="score-input" id="G35-s2" type="number" min="0" step="1" inputmode="numeric" aria-label="G35 Curacao score"></td>
+      <td><strong>Curacao</strong><br><span class="badge unallocated">Unallocated</span></td>
+      <td>Kansas City, USA</td>
+      <td class="winner-cell" id="winner-G35"></td>
+      <td><input class="note-input" id="note-G35" type="text" aria-label="G35 note"></td>
+    </tr><tr data-match="G36">
+      <td>G36</td>
+      <td>Sun 21 Jun 2026</td>
+      <td>05:00</td>
+      <td>Group F</td>
+      <td><strong>Tunisia</strong><br><span class="badge allocated">Jack</span></td>
+      <td class="score-cell"><input class="score-input" id="G36-s1" type="number" min="0" step="1" inputmode="numeric" aria-label="G36 Tunisia score"></td>
+      <td class="score-cell"><input class="score-input" id="G36-s2" type="number" min="0" step="1" inputmode="numeric" aria-label="G36 Japan score"></td>
+      <td><strong>Japan</strong><br><span class="badge allocated">Kayleigh</span></td>
+      <td>Guadalupe, Mexico</td>
+      <td class="winner-cell" id="winner-G36"></td>
+      <td><input class="note-input" id="note-G36" type="text" aria-label="G36 note"></td>
+    </tr><tr data-match="G37">
+      <td>G37</td>
+      <td>Sun 21 Jun 2026</td>
+      <td>17:00</td>
+      <td>Group H</td>
+      <td><strong>Spain</strong><br><span class="badge allocated">Caitlin</span></td>
+      <td class="score-cell"><input class="score-input" id="G37-s1" type="number" min="0" step="1" inputmode="numeric" aria-label="G37 Spain score"></td>
+      <td class="score-cell"><input class="score-input" id="G37-s2" type="number" min="0" step="1" inputmode="numeric" aria-label="G37 Saudi Arabia score"></td>
+      <td><strong>Saudi Arabia</strong><br><span class="badge unallocated">Unallocated</span></td>
+      <td>Atlanta, USA</td>
+      <td class="winner-cell" id="winner-G37"></td>
+      <td><input class="note-input" id="note-G37" type="text" aria-label="G37 note"></td>
+    </tr><tr data-match="G38">
+      <td>G38</td>
+      <td>Sun 21 Jun 2026</td>
+      <td>20:00</td>
+      <td>Group G</td>
+      <td><strong>Belgium</strong><br><span class="badge allocated">Zach</span></td>
+      <td class="score-cell"><input class="score-input" id="G38-s1" type="number" min="0" step="1" inputmode="numeric" aria-label="G38 Belgium score"></td>
+      <td class="score-cell"><input class="score-input" id="G38-s2" type="number" min="0" step="1" inputmode="numeric" aria-label="G38 Iran score"></td>
+      <td><strong>Iran</strong><br><span class="badge unallocated">Unallocated</span></td>
+      <td>Los Angeles, USA</td>
+      <td class="winner-cell" id="winner-G38"></td>
+      <td><input class="note-input" id="note-G38" type="text" aria-label="G38 note"></td>
+    </tr><tr data-match="G39">
+      <td>G39</td>
+      <td>Sun 21 Jun 2026</td>
+      <td>23:00</td>
+      <td>Group H</td>
+      <td><strong>Uruguay</strong><br><span class="badge allocated">Janos</span></td>
+      <td class="score-cell"><input class="score-input" id="G39-s1" type="number" min="0" step="1" inputmode="numeric" aria-label="G39 Uruguay score"></td>
+      <td class="score-cell"><input class="score-input" id="G39-s2" type="number" min="0" step="1" inputmode="numeric" aria-label="G39 Cape Verde score"></td>
+      <td><strong>Cape Verde</strong><br><span class="badge unallocated">Unallocated</span></td>
+      <td>Miami, USA</td>
+      <td class="winner-cell" id="winner-G39"></td>
+      <td><input class="note-input" id="note-G39" type="text" aria-label="G39 note"></td>
+    </tr><tr data-match="G40">
+      <td>G40</td>
+      <td>Mon 22 Jun 2026</td>
+      <td>02:00</td>
+      <td>Group G</td>
+      <td><strong>New Zealand</strong><br><span class="badge unallocated">Unallocated</span></td>
+      <td class="score-cell"><input class="score-input" id="G40-s1" type="number" min="0" step="1" inputmode="numeric" aria-label="G40 New Zealand score"></td>
+      <td class="score-cell"><input class="score-input" id="G40-s2" type="number" min="0" step="1" inputmode="numeric" aria-label="G40 Egypt score"></td>
+      <td><strong>Egypt</strong><br><span class="badge allocated">Joseph</span></td>
+      <td>Vancouver, Canada</td>
+      <td class="winner-cell" id="winner-G40"></td>
+      <td><input class="note-input" id="note-G40" type="text" aria-label="G40 note"></td>
+    </tr><tr data-match="G41">
+      <td>G41</td>
+      <td>Mon 22 Jun 2026</td>
+      <td>18:00</td>
+      <td>Group J</td>
+      <td><strong>Argentina</strong><br><span class="badge allocated">Bradley</span></td>
+      <td class="score-cell"><input class="score-input" id="G41-s1" type="number" min="0" step="1" inputmode="numeric" aria-label="G41 Argentina score"></td>
+      <td class="score-cell"><input class="score-input" id="G41-s2" type="number" min="0" step="1" inputmode="numeric" aria-label="G41 Austria score"></td>
+      <td><strong>Austria</strong><br><span class="badge allocated">Leanne</span></td>
+      <td>Arlington, USA</td>
+      <td class="winner-cell" id="winner-G41"></td>
+      <td><input class="note-input" id="note-G41" type="text" aria-label="G41 note"></td>
+    </tr><tr data-match="G42">
+      <td>G42</td>
+      <td>Mon 22 Jun 2026</td>
+      <td>22:00</td>
+      <td>Group I</td>
+      <td><strong>France</strong><br><span class="badge allocated">Callum</span></td>
+      <td class="score-cell"><input class="score-input" id="G42-s1" type="number" min="0" step="1" inputmode="numeric" aria-label="G42 France score"></td>
+      <td class="score-cell"><input class="score-input" id="G42-s2" type="number" min="0" step="1" inputmode="numeric" aria-label="G42 Iraq score"></td>
+      <td><strong>Iraq</strong><br><span class="badge unallocated">Unallocated</span></td>
+      <td>Philadelphia, USA</td>
+      <td class="winner-cell" id="winner-G42"></td>
+      <td><input class="note-input" id="note-G42" type="text" aria-label="G42 note"></td>
+    </tr><tr data-match="G43">
+      <td>G43</td>
+      <td>Tue 23 Jun 2026</td>
+      <td>01:00</td>
+      <td>Group I</td>
+      <td><strong>Norway</strong><br><span class="badge allocated">Rob</span></td>
+      <td class="score-cell"><input class="score-input" id="G43-s1" type="number" min="0" step="1" inputmode="numeric" aria-label="G43 Norway score"></td>
+      <td class="score-cell"><input class="score-input" id="G43-s2" type="number" min="0" step="1" inputmode="numeric" aria-label="G43 Senegal score"></td>
+      <td><strong>Senegal</strong><br><span class="badge allocated">Richard</span></td>
+      <td>Toronto, Canada</td>
+      <td class="winner-cell" id="winner-G43"></td>
+      <td><input class="note-input" id="note-G43" type="text" aria-label="G43 note"></td>
+    </tr><tr data-match="G44">
+      <td>G44</td>
+      <td>Tue 23 Jun 2026</td>
+      <td>04:00</td>
+      <td>Group J</td>
+      <td><strong>Jordan</strong><br><span class="badge unallocated">Unallocated</span></td>
+      <td class="score-cell"><input class="score-input" id="G44-s1" type="number" min="0" step="1" inputmode="numeric" aria-label="G44 Jordan score"></td>
+      <td class="score-cell"><input class="score-input" id="G44-s2" type="number" min="0" step="1" inputmode="numeric" aria-label="G44 Algeria score"></td>
+      <td><strong>Algeria</strong><br><span class="badge allocated">James</span></td>
+      <td>Santa Clara, USA</td>
+      <td class="winner-cell" id="winner-G44"></td>
+      <td><input class="note-input" id="note-G44" type="text" aria-label="G44 note"></td>
+    </tr><tr data-match="G45">
+      <td>G45</td>
+      <td>Tue 23 Jun 2026</td>
+      <td>18:00</td>
+      <td>Group K</td>
+      <td><strong>Portugal</strong><br><span class="badge allocated">Emily</span></td>
+      <td class="score-cell"><input class="score-input" id="G45-s1" type="number" min="0" step="1" inputmode="numeric" aria-label="G45 Portugal score"></td>
+      <td class="score-cell"><input class="score-input" id="G45-s2" type="number" min="0" step="1" inputmode="numeric" aria-label="G45 Uzbekistan score"></td>
+      <td><strong>Uzbekistan</strong><br><span class="badge unallocated">Unallocated</span></td>
+      <td>Houston, USA</td>
+      <td class="winner-cell" id="winner-G45"></td>
+      <td><input class="note-input" id="note-G45" type="text" aria-label="G45 note"></td>
+    </tr><tr data-match="G46">
+      <td>G46</td>
+      <td>Tue 23 Jun 2026</td>
+      <td>21:00</td>
+      <td>Group L</td>
+      <td><strong>England</strong><br><span class="badge allocated">Mark</span></td>
+      <td class="score-cell"><input class="score-input" id="G46-s1" type="number" min="0" step="1" inputmode="numeric" aria-label="G46 England score"></td>
+      <td class="score-cell"><input class="score-input" id="G46-s2" type="number" min="0" step="1" inputmode="numeric" aria-label="G46 Ghana score"></td>
+      <td><strong>Ghana</strong><br><span class="badge allocated">Angus</span></td>
+      <td>Foxborough, USA</td>
+      <td class="winner-cell" id="winner-G46"></td>
+      <td><input class="note-input" id="note-G46" type="text" aria-label="G46 note"></td>
+    </tr><tr data-match="G47">
+      <td>G47</td>
+      <td>Wed 24 Jun 2026</td>
+      <td>00:00</td>
+      <td>Group L</td>
+      <td><strong>Panama</strong><br><span class="badge unallocated">Unallocated</span></td>
+      <td class="score-cell"><input class="score-input" id="G47-s1" type="number" min="0" step="1" inputmode="numeric" aria-label="G47 Panama score"></td>
+      <td class="score-cell"><input class="score-input" id="G47-s2" type="number" min="0" step="1" inputmode="numeric" aria-label="G47 Croatia score"></td>
+      <td><strong>Croatia</strong><br><span class="badge allocated">Glen</span></td>
+      <td>Foxborough, USA</td>
+      <td class="winner-cell" id="winner-G47"></td>
+      <td><input class="note-input" id="note-G47" type="text" aria-label="G47 note"></td>
+    </tr><tr data-match="G48">
+      <td>G48</td>
+      <td>Wed 24 Jun 2026</td>
+      <td>03:00</td>
+      <td>Group K</td>
+      <td><strong>Colombia</strong><br><span class="badge allocated">Kay</span></td>
+      <td class="score-cell"><input class="score-input" id="G48-s1" type="number" min="0" step="1" inputmode="numeric" aria-label="G48 Colombia score"></td>
+      <td class="score-cell"><input class="score-input" id="G48-s2" type="number" min="0" step="1" inputmode="numeric" aria-label="G48 DR Congo score"></td>
+      <td><strong>DR Congo</strong><br><span class="badge unallocated">Unallocated</span></td>
+      <td>Zapopan, Mexico</td>
+      <td class="winner-cell" id="winner-G48"></td>
+      <td><input class="note-input" id="note-G48" type="text" aria-label="G48 note"></td>
+    </tr><tr data-match="G49">
+      <td>G49</td>
+      <td>Wed 24 Jun 2026</td>
+      <td>20:00</td>
+      <td>Group B</td>
+      <td><strong>Switzerland</strong><br><span class="badge allocated">Paul</span></td>
+      <td class="score-cell"><input class="score-input" id="G49-s1" type="number" min="0" step="1" inputmode="numeric" aria-label="G49 Switzerland score"></td>
+      <td class="score-cell"><input class="score-input" id="G49-s2" type="number" min="0" step="1" inputmode="numeric" aria-label="G49 Canada score"></td>
+      <td><strong>Canada</strong><br><span class="badge allocated">Cameron</span></td>
+      <td>Vancouver, Canada</td>
+      <td class="winner-cell" id="winner-G49"></td>
+      <td><input class="note-input" id="note-G49" type="text" aria-label="G49 note"></td>
+    </tr><tr data-match="G50">
+      <td>G50</td>
+      <td>Wed 24 Jun 2026</td>
+      <td>20:00</td>
+      <td>Group B</td>
+      <td><strong>Bosnia &amp; Herzegovina</strong><br><span class="badge unallocated">Unallocated</span></td>
+      <td class="score-cell"><input class="score-input" id="G50-s1" type="number" min="0" step="1" inputmode="numeric" aria-label="G50 Bosnia &amp; Herzegovina score"></td>
+      <td class="score-cell"><input class="score-input" id="G50-s2" type="number" min="0" step="1" inputmode="numeric" aria-label="G50 Qatar score"></td>
+      <td><strong>Qatar</strong><br><span class="badge unallocated">Unallocated</span></td>
+      <td>Seattle, USA</td>
+      <td class="winner-cell" id="winner-G50"></td>
+      <td><input class="note-input" id="note-G50" type="text" aria-label="G50 note"></td>
+    </tr><tr data-match="G51">
+      <td>G51</td>
+      <td>Wed 24 Jun 2026</td>
+      <td>23:00</td>
+      <td>Group C</td>
+      <td><strong>Morocco</strong><br><span class="badge allocated">Leon</span></td>
+      <td class="score-cell"><input class="score-input" id="G51-s1" type="number" min="0" step="1" inputmode="numeric" aria-label="G51 Morocco score"></td>
+      <td class="score-cell"><input class="score-input" id="G51-s2" type="number" min="0" step="1" inputmode="numeric" aria-label="G51 Haiti score"></td>
+      <td><strong>Haiti</strong><br><span class="badge unallocated">Unallocated</span></td>
+      <td>Atlanta, USA</td>
+      <td class="winner-cell" id="winner-G51"></td>
+      <td><input class="note-input" id="note-G51" type="text" aria-label="G51 note"></td>
+    </tr><tr data-match="G52">
+      <td>G52</td>
+      <td>Wed 24 Jun 2026</td>
+      <td>23:00</td>
+      <td>Group C</td>
+      <td><strong>Scotland</strong><br><span class="badge allocated">Mitch</span></td>
+      <td class="score-cell"><input class="score-input" id="G52-s1" type="number" min="0" step="1" inputmode="numeric" aria-label="G52 Scotland score"></td>
+      <td class="score-cell"><input class="score-input" id="G52-s2" type="number" min="0" step="1" inputmode="numeric" aria-label="G52 Brazil score"></td>
+      <td><strong>Brazil</strong><br><span class="badge allocated">Lorraine</span></td>
+      <td>Miami, USA</td>
+      <td class="winner-cell" id="winner-G52"></td>
+      <td><input class="note-input" id="note-G52" type="text" aria-label="G52 note"></td>
+    </tr><tr data-match="G53">
+      <td>G53</td>
+      <td>Thu 25 Jun 2026</td>
+      <td>02:00</td>
+      <td>Group A</td>
+      <td><strong>South Africa</strong><br><span class="badge unallocated">Unallocated</span></td>
+      <td class="score-cell"><input class="score-input" id="G53-s1" type="number" min="0" step="1" inputmode="numeric" aria-label="G53 South Africa score"></td>
+      <td class="score-cell"><input class="score-input" id="G53-s2" type="number" min="0" step="1" inputmode="numeric" aria-label="G53 South Korea score"></td>
+      <td><strong>South Korea</strong><br><span class="badge unallocated">Unallocated</span></td>
+      <td>Guadalupe, Mexico</td>
+      <td class="winner-cell" id="winner-G53"></td>
+      <td><input class="note-input" id="note-G53" type="text" aria-label="G53 note"></td>
+    </tr><tr data-match="G54">
+      <td>G54</td>
+      <td>Thu 25 Jun 2026</td>
+      <td>02:00</td>
+      <td>Group A</td>
+      <td><strong>Czech Republic</strong><br><span class="badge allocated">Liam</span></td>
+      <td class="score-cell"><input class="score-input" id="G54-s1" type="number" min="0" step="1" inputmode="numeric" aria-label="G54 Czech Republic score"></td>
+      <td class="score-cell"><input class="score-input" id="G54-s2" type="number" min="0" step="1" inputmode="numeric" aria-label="G54 Mexico score"></td>
+      <td><strong>Mexico</strong><br><span class="badge allocated">Luca</span></td>
+      <td>Mexico City, Mexico</td>
+      <td class="winner-cell" id="winner-G54"></td>
+      <td><input class="note-input" id="note-G54" type="text" aria-label="G54 note"></td>
+    </tr><tr data-match="G55">
+      <td>G55</td>
+      <td>Thu 25 Jun 2026</td>
+      <td>21:00</td>
+      <td>Group E</td>
+      <td><strong>Curacao</strong><br><span class="badge unallocated">Unallocated</span></td>
+      <td class="score-cell"><input class="score-input" id="G55-s1" type="number" min="0" step="1" inputmode="numeric" aria-label="G55 Curacao score"></td>
+      <td class="score-cell"><input class="score-input" id="G55-s2" type="number" min="0" step="1" inputmode="numeric" aria-label="G55 Ivory Coast score"></td>
+      <td><strong>Ivory Coast</strong><br><span class="badge allocated">Carl</span></td>
+      <td>Philadelphia, USA</td>
+      <td class="winner-cell" id="winner-G55"></td>
+      <td><input class="note-input" id="note-G55" type="text" aria-label="G55 note"></td>
+    </tr><tr data-match="G56">
+      <td>G56</td>
+      <td>Thu 25 Jun 2026</td>
+      <td>21:00</td>
+      <td>Group E</td>
+      <td><strong>Ecuador</strong><br><span class="badge allocated">Jamie</span></td>
+      <td class="score-cell"><input class="score-input" id="G56-s1" type="number" min="0" step="1" inputmode="numeric" aria-label="G56 Ecuador score"></td>
+      <td class="score-cell"><input class="score-input" id="G56-s2" type="number" min="0" step="1" inputmode="numeric" aria-label="G56 Germany score"></td>
+      <td><strong>Germany</strong><br><span class="badge allocated">Elliott</span></td>
+      <td>New Jersey, USA</td>
+      <td class="winner-cell" id="winner-G56"></td>
+      <td><input class="note-input" id="note-G56" type="text" aria-label="G56 note"></td>
+    </tr><tr data-match="G57">
+      <td>G57</td>
+      <td>Fri 26 Jun 2026</td>
+      <td>00:00</td>
+      <td>Group F</td>
+      <td><strong>Tunisia</strong><br><span class="badge allocated">Jack</span></td>
+      <td class="score-cell"><input class="score-input" id="G57-s1" type="number" min="0" step="1" inputmode="numeric" aria-label="G57 Tunisia score"></td>
+      <td class="score-cell"><input class="score-input" id="G57-s2" type="number" min="0" step="1" inputmode="numeric" aria-label="G57 Netherlands score"></td>
+      <td><strong>Netherlands</strong><br><span class="badge allocated">Matthew</span></td>
+      <td>Kansas City, USA</td>
+      <td class="winner-cell" id="winner-G57"></td>
+      <td><input class="note-input" id="note-G57" type="text" aria-label="G57 note"></td>
+    </tr><tr data-match="G58">
+      <td>G58</td>
+      <td>Fri 26 Jun 2026</td>
+      <td>00:00</td>
+      <td>Group F</td>
+      <td><strong>Japan</strong><br><span class="badge allocated">Kayleigh</span></td>
+      <td class="score-cell"><input class="score-input" id="G58-s1" type="number" min="0" step="1" inputmode="numeric" aria-label="G58 Japan score"></td>
+      <td class="score-cell"><input class="score-input" id="G58-s2" type="number" min="0" step="1" inputmode="numeric" aria-label="G58 Sweden score"></td>
+      <td><strong>Sweden</strong><br><span class="badge allocated">Mark</span></td>
+      <td>Arlington, USA</td>
+      <td class="winner-cell" id="winner-G58"></td>
+      <td><input class="note-input" id="note-G58" type="text" aria-label="G58 note"></td>
+    </tr><tr data-match="G59">
+      <td>G59</td>
+      <td>Fri 26 Jun 2026</td>
+      <td>03:00</td>
+      <td>Group D</td>
+      <td><strong>Turkey</strong><br><span class="badge allocated">Andy</span></td>
+      <td class="score-cell"><input class="score-input" id="G59-s1" type="number" min="0" step="1" inputmode="numeric" aria-label="G59 Turkey score"></td>
+      <td class="score-cell"><input class="score-input" id="G59-s2" type="number" min="0" step="1" inputmode="numeric" aria-label="G59 USA score"></td>
+      <td><strong>USA</strong><br><span class="badge allocated">Phil</span></td>
+      <td>Los Angeles, USA</td>
+      <td class="winner-cell" id="winner-G59"></td>
+      <td><input class="note-input" id="note-G59" type="text" aria-label="G59 note"></td>
+    </tr><tr data-match="G60">
+      <td>G60</td>
+      <td>Fri 26 Jun 2026</td>
+      <td>03:00</td>
+      <td>Group D</td>
+      <td><strong>Paraguay</strong><br><span class="badge allocated">Harrison</span></td>
+      <td class="score-cell"><input class="score-input" id="G60-s1" type="number" min="0" step="1" inputmode="numeric" aria-label="G60 Paraguay score"></td>
+      <td class="score-cell"><input class="score-input" id="G60-s2" type="number" min="0" step="1" inputmode="numeric" aria-label="G60 Australia score"></td>
+      <td><strong>Australia</strong><br><span class="badge unallocated">Unallocated</span></td>
+      <td>Santa Clara, USA</td>
+      <td class="winner-cell" id="winner-G60"></td>
+      <td><input class="note-input" id="note-G60" type="text" aria-label="G60 note"></td>
+    </tr><tr data-match="G61">
+      <td>G61</td>
+      <td>Fri 26 Jun 2026</td>
+      <td>20:00</td>
+      <td>Group I</td>
+      <td><strong>Norway</strong><br><span class="badge allocated">Rob</span></td>
+      <td class="score-cell"><input class="score-input" id="G61-s1" type="number" min="0" step="1" inputmode="numeric" aria-label="G61 Norway score"></td>
+      <td class="score-cell"><input class="score-input" id="G61-s2" type="number" min="0" step="1" inputmode="numeric" aria-label="G61 France score"></td>
+      <td><strong>France</strong><br><span class="badge allocated">Callum</span></td>
+      <td>Foxborough, USA</td>
+      <td class="winner-cell" id="winner-G61"></td>
+      <td><input class="note-input" id="note-G61" type="text" aria-label="G61 note"></td>
+    </tr><tr data-match="G62">
+      <td>G62</td>
+      <td>Fri 26 Jun 2026</td>
+      <td>20:00</td>
+      <td>Group I</td>
+      <td><strong>Senegal</strong><br><span class="badge allocated">Richard</span></td>
+      <td class="score-cell"><input class="score-input" id="G62-s1" type="number" min="0" step="1" inputmode="numeric" aria-label="G62 Senegal score"></td>
+      <td class="score-cell"><input class="score-input" id="G62-s2" type="number" min="0" step="1" inputmode="numeric" aria-label="G62 Iraq score"></td>
+      <td><strong>Iraq</strong><br><span class="badge unallocated">Unallocated</span></td>
+      <td>Toronto, Canada</td>
+      <td class="winner-cell" id="winner-G62"></td>
+      <td><input class="note-input" id="note-G62" type="text" aria-label="G62 note"></td>
+    </tr><tr data-match="G63">
+      <td>G63</td>
+      <td>Sat 27 Jun 2026</td>
+      <td>01:00</td>
+      <td>Group H</td>
+      <td><strong>Cape Verde</strong><br><span class="badge unallocated">Unallocated</span></td>
+      <td class="score-cell"><input class="score-input" id="G63-s1" type="number" min="0" step="1" inputmode="numeric" aria-label="G63 Cape Verde score"></td>
+      <td class="score-cell"><input class="score-input" id="G63-s2" type="number" min="0" step="1" inputmode="numeric" aria-label="G63 Saudi Arabia score"></td>
+      <td><strong>Saudi Arabia</strong><br><span class="badge unallocated">Unallocated</span></td>
+      <td>Houston, USA</td>
+      <td class="winner-cell" id="winner-G63"></td>
+      <td><input class="note-input" id="note-G63" type="text" aria-label="G63 note"></td>
+    </tr><tr data-match="G64">
+      <td>G64</td>
+      <td>Sat 27 Jun 2026</td>
+      <td>01:00</td>
+      <td>Group H</td>
+      <td><strong>Uruguay</strong><br><span class="badge allocated">Janos</span></td>
+      <td class="score-cell"><input class="score-input" id="G64-s1" type="number" min="0" step="1" inputmode="numeric" aria-label="G64 Uruguay score"></td>
+      <td class="score-cell"><input class="score-input" id="G64-s2" type="number" min="0" step="1" inputmode="numeric" aria-label="G64 Spain score"></td>
+      <td><strong>Spain</strong><br><span class="badge allocated">Caitlin</span></td>
+      <td>Zapopan, Mexico</td>
+      <td class="winner-cell" id="winner-G64"></td>
+      <td><input class="note-input" id="note-G64" type="text" aria-label="G64 note"></td>
+    </tr><tr data-match="G65">
+      <td>G65</td>
+      <td>Sat 27 Jun 2026</td>
+      <td>04:00</td>
+      <td>Group G</td>
+      <td><strong>New Zealand</strong><br><span class="badge unallocated">Unallocated</span></td>
+      <td class="score-cell"><input class="score-input" id="G65-s1" type="number" min="0" step="1" inputmode="numeric" aria-label="G65 New Zealand score"></td>
+      <td class="score-cell"><input class="score-input" id="G65-s2" type="number" min="0" step="1" inputmode="numeric" aria-label="G65 Belgium score"></td>
+      <td><strong>Belgium</strong><br><span class="badge allocated">Zach</span></td>
+      <td>Vancouver, Canada</td>
+      <td class="winner-cell" id="winner-G65"></td>
+      <td><input class="note-input" id="note-G65" type="text" aria-label="G65 note"></td>
+    </tr><tr data-match="G66">
+      <td>G66</td>
+      <td>Sat 27 Jun 2026</td>
+      <td>04:00</td>
+      <td>Group G</td>
+      <td><strong>Egypt</strong><br><span class="badge allocated">Joseph</span></td>
+      <td class="score-cell"><input class="score-input" id="G66-s1" type="number" min="0" step="1" inputmode="numeric" aria-label="G66 Egypt score"></td>
+      <td class="score-cell"><input class="score-input" id="G66-s2" type="number" min="0" step="1" inputmode="numeric" aria-label="G66 Iran score"></td>
+      <td><strong>Iran</strong><br><span class="badge unallocated">Unallocated</span></td>
+      <td>Seattle, USA</td>
+      <td class="winner-cell" id="winner-G66"></td>
+      <td><input class="note-input" id="note-G66" type="text" aria-label="G66 note"></td>
+    </tr><tr data-match="G67">
+      <td>G67</td>
+      <td>Sat 27 Jun 2026</td>
+      <td>22:00</td>
+      <td>Group L</td>
+      <td><strong>Panama</strong><br><span class="badge unallocated">Unallocated</span></td>
+      <td class="score-cell"><input class="score-input" id="G67-s1" type="number" min="0" step="1" inputmode="numeric" aria-label="G67 Panama score"></td>
+      <td class="score-cell"><input class="score-input" id="G67-s2" type="number" min="0" step="1" inputmode="numeric" aria-label="G67 England score"></td>
+      <td><strong>England</strong><br><span class="badge allocated">Mark</span></td>
+      <td>New Jersey, USA</td>
+      <td class="winner-cell" id="winner-G67"></td>
+      <td><input class="note-input" id="note-G67" type="text" aria-label="G67 note"></td>
+    </tr><tr data-match="G68">
+      <td>G68</td>
+      <td>Sat 27 Jun 2026</td>
+      <td>22:00</td>
+      <td>Group L</td>
+      <td><strong>Croatia</strong><br><span class="badge allocated">Glen</span></td>
+      <td class="score-cell"><input class="score-input" id="G68-s1" type="number" min="0" step="1" inputmode="numeric" aria-label="G68 Croatia score"></td>
+      <td class="score-cell"><input class="score-input" id="G68-s2" type="number" min="0" step="1" inputmode="numeric" aria-label="G68 Ghana score"></td>
+      <td><strong>Ghana</strong><br><span class="badge allocated">Angus</span></td>
+      <td>Philadelphia, USA</td>
+      <td class="winner-cell" id="winner-G68"></td>
+      <td><input class="note-input" id="note-G68" type="text" aria-label="G68 note"></td>
+    </tr><tr data-match="G69">
+      <td>G69</td>
+      <td>Sun 28 Jun 2026</td>
+      <td>00:30</td>
+      <td>Group K</td>
+      <td><strong>Colombia</strong><br><span class="badge allocated">Kay</span></td>
+      <td class="score-cell"><input class="score-input" id="G69-s1" type="number" min="0" step="1" inputmode="numeric" aria-label="G69 Colombia score"></td>
+      <td class="score-cell"><input class="score-input" id="G69-s2" type="number" min="0" step="1" inputmode="numeric" aria-label="G69 Portugal score"></td>
+      <td><strong>Portugal</strong><br><span class="badge allocated">Emily</span></td>
+      <td>Miami, USA</td>
+      <td class="winner-cell" id="winner-G69"></td>
+      <td><input class="note-input" id="note-G69" type="text" aria-label="G69 note"></td>
+    </tr><tr data-match="G70">
+      <td>G70</td>
+      <td>Sun 28 Jun 2026</td>
+      <td>00:30</td>
+      <td>Group K</td>
+      <td><strong>DR Congo</strong><br><span class="badge unallocated">Unallocated</span></td>
+      <td class="score-cell"><input class="score-input" id="G70-s1" type="number" min="0" step="1" inputmode="numeric" aria-label="G70 DR Congo score"></td>
+      <td class="score-cell"><input class="score-input" id="G70-s2" type="number" min="0" step="1" inputmode="numeric" aria-label="G70 Uzbekistan score"></td>
+      <td><strong>Uzbekistan</strong><br><span class="badge unallocated">Unallocated</span></td>
+      <td>Atlanta, USA</td>
+      <td class="winner-cell" id="winner-G70"></td>
+      <td><input class="note-input" id="note-G70" type="text" aria-label="G70 note"></td>
+    </tr><tr data-match="G71">
+      <td>G71</td>
+      <td>Sun 28 Jun 2026</td>
+      <td>03:00</td>
+      <td>Group J</td>
+      <td><strong>Algeria</strong><br><span class="badge allocated">James</span></td>
+      <td class="score-cell"><input class="score-input" id="G71-s1" type="number" min="0" step="1" inputmode="numeric" aria-label="G71 Algeria score"></td>
+      <td class="score-cell"><input class="score-input" id="G71-s2" type="number" min="0" step="1" inputmode="numeric" aria-label="G71 Austria score"></td>
+      <td><strong>Austria</strong><br><span class="badge allocated">Leanne</span></td>
+      <td>Kansas City, USA</td>
+      <td class="winner-cell" id="winner-G71"></td>
+      <td><input class="note-input" id="note-G71" type="text" aria-label="G71 note"></td>
+    </tr><tr data-match="G72">
+      <td>G72</td>
+      <td>Sun 28 Jun 2026</td>
+      <td>03:00</td>
+      <td>Group J</td>
+      <td><strong>Jordan</strong><br><span class="badge unallocated">Unallocated</span></td>
+      <td class="score-cell"><input class="score-input" id="G72-s1" type="number" min="0" step="1" inputmode="numeric" aria-label="G72 Jordan score"></td>
+      <td class="score-cell"><input class="score-input" id="G72-s2" type="number" min="0" step="1" inputmode="numeric" aria-label="G72 Argentina score"></td>
+      <td><strong>Argentina</strong><br><span class="badge allocated">Bradley</span></td>
+      <td>Arlington, USA</td>
+      <td class="winner-cell" id="winner-G72"></td>
+      <td><input class="note-input" id="note-G72" type="text" aria-label="G72 note"></td>
+    </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2 class="section-title">Knockout stages</h2>
+<p class="small">Fill in actual teams as the tournament progresses.</p>
+<section class="round-section">
+<h2>Round of 32</h2>
+<table class="wall-table">
+<thead>
+<tr><th>Match</th><th>Date</th><th>UK</th><th>Side 1</th><th colspan="2">Score</th><th>Side 2</th><th>Venue</th><th>Winner</th></tr>
+</thead>
+<tbody>
+<tr>
+<td>M73</td>
+<td>Sun 28 Jun 2026</td>
+<td>20:00</td>
+<td>Group A runners-up<br/><span class="write editable-save" contenteditable="true">Team / owner</span></td>
+<td class="score editable-save" contenteditable="true"></td>
+<td class="score editable-save" contenteditable="true"></td>
+<td>Group B runners-up<br/><span class="write editable-save" contenteditable="true">Team / owner</span></td>
+<td>Los Angeles, USA</td>
+<td class="write editable-save" contenteditable="true">Winner</td>
+</tr>
+<tr>
+<td>M76</td>
+<td>Mon 29 Jun 2026</td>
+<td>18:00</td>
+<td>Group C winners<br/><span class="write editable-save" contenteditable="true">Team / owner</span></td>
+<td class="score editable-save" contenteditable="true"></td>
+<td class="score editable-save" contenteditable="true"></td>
+<td>Group F runners-up<br/><span class="write editable-save" contenteditable="true">Team / owner</span></td>
+<td>Houston, USA</td>
+<td class="write editable-save" contenteditable="true">Winner</td>
+</tr>
+<tr>
+<td>M74</td>
+<td>Mon 29 Jun 2026</td>
+<td>21:30</td>
+<td>Group E winners<br/><span class="write editable-save" contenteditable="true">Team / owner</span></td>
+<td class="score editable-save" contenteditable="true"></td>
+<td class="score editable-save" contenteditable="true"></td>
+<td>Group A/B/C/D/F third place<br/><span class="write editable-save" contenteditable="true">Team / owner</span></td>
+<td>Foxborough, USA</td>
+<td class="write editable-save" contenteditable="true">Winner</td>
+</tr>
+<tr>
+<td>M75</td>
+<td>Tue 30 Jun 2026</td>
+<td>02:00</td>
+<td>Group F winners<br/><span class="write editable-save" contenteditable="true">Team / owner</span></td>
+<td class="score editable-save" contenteditable="true"></td>
+<td class="score editable-save" contenteditable="true"></td>
+<td>Group C runners-up<br/><span class="write editable-save" contenteditable="true">Team / owner</span></td>
+<td>Guadalupe, Mexico</td>
+<td class="write editable-save" contenteditable="true">Winner</td>
+</tr>
+<tr>
+<td>M78</td>
+<td>Tue 30 Jun 2026</td>
+<td>18:00</td>
+<td>Group E runners-up<br/><span class="write editable-save" contenteditable="true">Team / owner</span></td>
+<td class="score editable-save" contenteditable="true"></td>
+<td class="score editable-save" contenteditable="true"></td>
+<td>Group I runners-up<br/><span class="write editable-save" contenteditable="true">Team / owner</span></td>
+<td>Arlington, USA</td>
+<td class="write editable-save" contenteditable="true">Winner</td>
+</tr>
+<tr>
+<td>M77</td>
+<td>Tue 30 Jun 2026</td>
+<td>22:00</td>
+<td>Group I winners<br/><span class="write editable-save" contenteditable="true">Team / owner</span></td>
+<td class="score editable-save" contenteditable="true"></td>
+<td class="score editable-save" contenteditable="true"></td>
+<td>Group C/D/F/G/H third place<br/><span class="write editable-save" contenteditable="true">Team / owner</span></td>
+<td>New Jersey, USA</td>
+<td class="write editable-save" contenteditable="true">Winner</td>
+</tr>
+<tr>
+<td>M79</td>
+<td>Wed 01 Jul 2026</td>
+<td>02:00</td>
+<td>Group A winners<br/><span class="write editable-save" contenteditable="true">Team / owner</span></td>
+<td class="score editable-save" contenteditable="true"></td>
+<td class="score editable-save" contenteditable="true"></td>
+<td>Group C/E/F/H/I third place<br/><span class="write editable-save" contenteditable="true">Team / owner</span></td>
+<td>Mexico City, Mexico</td>
+<td class="write editable-save" contenteditable="true">Winner</td>
+</tr>
+<tr>
+<td>M80</td>
+<td>Wed 01 Jul 2026</td>
+<td>17:00</td>
+<td>Group L winners<br/><span class="write editable-save" contenteditable="true">Team / owner</span></td>
+<td class="score editable-save" contenteditable="true"></td>
+<td class="score editable-save" contenteditable="true"></td>
+<td>Group E/H/I/J/K third place<br/><span class="write editable-save" contenteditable="true">Team / owner</span></td>
+<td>Atlanta, USA</td>
+<td class="write editable-save" contenteditable="true">Winner</td>
+</tr>
+<tr>
+<td>M82</td>
+<td>Wed 01 Jul 2026</td>
+<td>21:00</td>
+<td>Group G winners<br/><span class="write editable-save" contenteditable="true">Team / owner</span></td>
+<td class="score editable-save" contenteditable="true"></td>
+<td class="score editable-save" contenteditable="true"></td>
+<td>Group A/E/H/I/J third place<br/><span class="write editable-save" contenteditable="true">Team / owner</span></td>
+<td>Seattle, USA</td>
+<td class="write editable-save" contenteditable="true">Winner</td>
+</tr>
+<tr>
+<td>M81</td>
+<td>Thu 02 Jul 2026</td>
+<td>01:00</td>
+<td>Group D winners<br/><span class="write editable-save" contenteditable="true">Team / owner</span></td>
+<td class="score editable-save" contenteditable="true"></td>
+<td class="score editable-save" contenteditable="true"></td>
+<td>Group B/E/F/I/J third place<br/><span class="write editable-save" contenteditable="true">Team / owner</span></td>
+<td>Santa Clara, USA</td>
+<td class="write editable-save" contenteditable="true">Winner</td>
+</tr>
+<tr>
+<td>M84</td>
+<td>Thu 02 Jul 2026</td>
+<td>20:00</td>
+<td>Group H winners<br/><span class="write editable-save" contenteditable="true">Team / owner</span></td>
+<td class="score editable-save" contenteditable="true"></td>
+<td class="score editable-save" contenteditable="true"></td>
+<td>Group J runners-up<br/><span class="write editable-save" contenteditable="true">Team / owner</span></td>
+<td>Los Angeles, USA</td>
+<td class="write editable-save" contenteditable="true">Winner</td>
+</tr>
+<tr>
+<td>M83</td>
+<td>Fri 03 Jul 2026</td>
+<td>00:00</td>
+<td>Group K runners-up<br/><span class="write editable-save" contenteditable="true">Team / owner</span></td>
+<td class="score editable-save" contenteditable="true"></td>
+<td class="score editable-save" contenteditable="true"></td>
+<td>Group L runners-up<br/><span class="write editable-save" contenteditable="true">Team / owner</span></td>
+<td>Toronto, Canada</td>
+<td class="write editable-save" contenteditable="true">Winner</td>
+</tr>
+<tr>
+<td>M85</td>
+<td>Fri 03 Jul 2026</td>
+<td>04:00</td>
+<td>Group B winners<br/><span class="write editable-save" contenteditable="true">Team / owner</span></td>
+<td class="score editable-save" contenteditable="true"></td>
+<td class="score editable-save" contenteditable="true"></td>
+<td>Group E/F/G/I/J third place<br/><span class="write editable-save" contenteditable="true">Team / owner</span></td>
+<td>Vancouver, Canada</td>
+<td class="write editable-save" contenteditable="true">Winner</td>
+</tr>
+<tr>
+<td>M88</td>
+<td>Fri 03 Jul 2026</td>
+<td>19:00</td>
+<td>Group D runners-up<br/><span class="write editable-save" contenteditable="true">Team / owner</span></td>
+<td class="score editable-save" contenteditable="true"></td>
+<td class="score editable-save" contenteditable="true"></td>
+<td>Group G runners-up<br/><span class="write editable-save" contenteditable="true">Team / owner</span></td>
+<td>Arlington, USA</td>
+<td class="write editable-save" contenteditable="true">Winner</td>
+</tr>
+<tr>
+<td>M86</td>
+<td>Fri 03 Jul 2026</td>
+<td>23:00</td>
+<td>Group J winners<br/><span class="write editable-save" contenteditable="true">Team / owner</span></td>
+<td class="score editable-save" contenteditable="true"></td>
+<td class="score editable-save" contenteditable="true"></td>
+<td>Group H runners-up<br/><span class="write editable-save" contenteditable="true">Team / owner</span></td>
+<td>Miami, USA</td>
+<td class="write editable-save" contenteditable="true">Winner</td>
+</tr>
+<tr>
+<td>M87</td>
+<td>Sat 04 Jul 2026</td>
+<td>02:30</td>
+<td>Group K winners<br/><span class="write editable-save" contenteditable="true">Team / owner</span></td>
+<td class="score editable-save" contenteditable="true"></td>
+<td class="score editable-save" contenteditable="true"></td>
+<td>Group D/E/I/J/L third place<br/><span class="write editable-save" contenteditable="true">Team / owner</span></td>
+<td>Kansas City, USA</td>
+<td class="write editable-save" contenteditable="true">Winner</td>
+</tr></tbody>
+</table>
+</section>
+<section class="round-section">
+<h2>Round of 16</h2>
+<table class="wall-table">
+<thead>
+<tr><th>Match</th><th>Date</th><th>UK</th><th>Side 1</th><th colspan="2">Score</th><th>Side 2</th><th>Venue</th><th>Winner</th></tr>
+</thead>
+<tbody>
+<tr>
+<td>M90</td>
+<td>Sat 04 Jul 2026</td>
+<td>18:00</td>
+<td>M73 winner<br/><span class="write editable-save" contenteditable="true">Team / owner</span></td>
+<td class="score editable-save" contenteditable="true"></td>
+<td class="score editable-save" contenteditable="true"></td>
+<td>M75 winner<br/><span class="write editable-save" contenteditable="true">Team / owner</span></td>
+<td>Houston, USA</td>
+<td class="write editable-save" contenteditable="true">Winner</td>
+</tr>
+<tr>
+<td>M89</td>
+<td>Sat 04 Jul 2026</td>
+<td>22:00</td>
+<td>M74 winner<br/><span class="write editable-save" contenteditable="true">Team / owner</span></td>
+<td class="score editable-save" contenteditable="true"></td>
+<td class="score editable-save" contenteditable="true"></td>
+<td>M77 winner<br/><span class="write editable-save" contenteditable="true">Team / owner</span></td>
+<td>Philadelphia, USA</td>
+<td class="write editable-save" contenteditable="true">Winner</td>
+</tr>
+<tr>
+<td>M91</td>
+<td>Sun 05 Jul 2026</td>
+<td>21:00</td>
+<td>M76 winner<br/><span class="write editable-save" contenteditable="true">Team / owner</span></td>
+<td class="score editable-save" contenteditable="true"></td>
+<td class="score editable-save" contenteditable="true"></td>
+<td>M78 winner<br/><span class="write editable-save" contenteditable="true">Team / owner</span></td>
+<td>New Jersey, USA</td>
+<td class="write editable-save" contenteditable="true">Winner</td>
+</tr>
+<tr>
+<td>M92</td>
+<td>Mon 06 Jul 2026</td>
+<td>01:00</td>
+<td>M79 winner<br/><span class="write editable-save" contenteditable="true">Team / owner</span></td>
+<td class="score editable-save" contenteditable="true"></td>
+<td class="score editable-save" contenteditable="true"></td>
+<td>M80 winner<br/><span class="write editable-save" contenteditable="true">Team / owner</span></td>
+<td>Mexico City, Mexico</td>
+<td class="write editable-save" contenteditable="true">Winner</td>
+</tr>
+<tr>
+<td>M93</td>
+<td>Mon 06 Jul 2026</td>
+<td>20:00</td>
+<td>M83 winner<br/><span class="write editable-save" contenteditable="true">Team / owner</span></td>
+<td class="score editable-save" contenteditable="true"></td>
+<td class="score editable-save" contenteditable="true"></td>
+<td>M84 winner<br/><span class="write editable-save" contenteditable="true">Team / owner</span></td>
+<td>Arlington, USA</td>
+<td class="write editable-save" contenteditable="true">Winner</td>
+</tr>
+<tr>
+<td>M94</td>
+<td>Tue 07 Jul 2026</td>
+<td>01:00</td>
+<td>M81 winner<br/><span class="write editable-save" contenteditable="true">Team / owner</span></td>
+<td class="score editable-save" contenteditable="true"></td>
+<td class="score editable-save" contenteditable="true"></td>
+<td>M82 winner<br/><span class="write editable-save" contenteditable="true">Team / owner</span></td>
+<td>Seattle, USA</td>
+<td class="write editable-save" contenteditable="true">Winner</td>
+</tr>
+<tr>
+<td>M95</td>
+<td>Tue 07 Jul 2026</td>
+<td>17:00</td>
+<td>M86 winner<br/><span class="write editable-save" contenteditable="true">Team / owner</span></td>
+<td class="score editable-save" contenteditable="true"></td>
+<td class="score editable-save" contenteditable="true"></td>
+<td>M88 winner<br/><span class="write editable-save" contenteditable="true">Team / owner</span></td>
+<td>Atlanta, USA</td>
+<td class="write editable-save" contenteditable="true">Winner</td>
+</tr>
+<tr>
+<td>M96</td>
+<td>Tue 07 Jul 2026</td>
+<td>21:00</td>
+<td>M85 winner<br/><span class="write editable-save" contenteditable="true">Team / owner</span></td>
+<td class="score editable-save" contenteditable="true"></td>
+<td class="score editable-save" contenteditable="true"></td>
+<td>M87 winner<br/><span class="write editable-save" contenteditable="true">Team / owner</span></td>
+<td>Vancouver, Canada</td>
+<td class="write editable-save" contenteditable="true">Winner</td>
+</tr></tbody>
+</table>
+</section>
+<section class="round-section">
+<h2>Quarter-final</h2>
+<table class="wall-table">
+<thead>
+<tr><th>Match</th><th>Date</th><th>UK</th><th>Side 1</th><th colspan="2">Score</th><th>Side 2</th><th>Venue</th><th>Winner</th></tr>
+</thead>
+<tbody>
+<tr>
+<td>M97</td>
+<td>Thu 09 Jul 2026</td>
+<td>21:00</td>
+<td>M89 winner<br/><span class="write editable-save" contenteditable="true">Team / owner</span></td>
+<td class="score editable-save" contenteditable="true"></td>
+<td class="score editable-save" contenteditable="true"></td>
+<td>M90 winner<br/><span class="write editable-save" contenteditable="true">Team / owner</span></td>
+<td>Foxborough, USA</td>
+<td class="write editable-save" contenteditable="true">Winner</td>
+</tr>
+<tr>
+<td>M98</td>
+<td>Fri 10 Jul 2026</td>
+<td>20:00</td>
+<td>M93 winner<br/><span class="write editable-save" contenteditable="true">Team / owner</span></td>
+<td class="score editable-save" contenteditable="true"></td>
+<td class="score editable-save" contenteditable="true"></td>
+<td>M94 winner<br/><span class="write editable-save" contenteditable="true">Team / owner</span></td>
+<td>Los Angeles, USA</td>
+<td class="write editable-save" contenteditable="true">Winner</td>
+</tr>
+<tr>
+<td>M99</td>
+<td>Sat 11 Jul 2026</td>
+<td>22:00</td>
+<td>M91 winner<br/><span class="write editable-save" contenteditable="true">Team / owner</span></td>
+<td class="score editable-save" contenteditable="true"></td>
+<td class="score editable-save" contenteditable="true"></td>
+<td>M92 winner<br/><span class="write editable-save" contenteditable="true">Team / owner</span></td>
+<td>Miami, USA</td>
+<td class="write editable-save" contenteditable="true">Winner</td>
+</tr>
+<tr>
+<td>M100</td>
+<td>Sun 12 Jul 2026</td>
+<td>02:00</td>
+<td>M95 winner<br/><span class="write editable-save" contenteditable="true">Team / owner</span></td>
+<td class="score editable-save" contenteditable="true"></td>
+<td class="score editable-save" contenteditable="true"></td>
+<td>M96 winner<br/><span class="write editable-save" contenteditable="true">Team / owner</span></td>
+<td>Kansas City, USA</td>
+<td class="write editable-save" contenteditable="true">Winner</td>
+</tr></tbody>
+</table>
+</section>
+<section class="round-section">
+<h2>Semi-final</h2>
+<table class="wall-table">
+<thead>
+<tr><th>Match</th><th>Date</th><th>UK</th><th>Side 1</th><th colspan="2">Score</th><th>Side 2</th><th>Venue</th><th>Winner</th></tr>
+</thead>
+<tbody>
+<tr>
+<td>M101</td>
+<td>Tue 14 Jul 2026</td>
+<td>20:00</td>
+<td>M97 winner<br/><span class="write editable-save" contenteditable="true">Team / owner</span></td>
+<td class="score editable-save" contenteditable="true"></td>
+<td class="score editable-save" contenteditable="true"></td>
+<td>M98 winner<br/><span class="write editable-save" contenteditable="true">Team / owner</span></td>
+<td>Arlington, USA</td>
+<td class="write editable-save" contenteditable="true">Winner</td>
+</tr>
+<tr>
+<td>M102</td>
+<td>Wed 15 Jul 2026</td>
+<td>20:00</td>
+<td>M99 winner<br/><span class="write editable-save" contenteditable="true">Team / owner</span></td>
+<td class="score editable-save" contenteditable="true"></td>
+<td class="score editable-save" contenteditable="true"></td>
+<td>M100 winner<br/><span class="write editable-save" contenteditable="true">Team / owner</span></td>
+<td>Atlanta, USA</td>
+<td class="write editable-save" contenteditable="true">Winner</td>
+</tr></tbody>
+</table>
+</section>
+<section class="round-section">
+<h2>Third Place Playoff</h2>
+<table class="wall-table">
+<thead>
+<tr><th>Match</th><th>Date</th><th>UK</th><th>Side 1</th><th colspan="2">Score</th><th>Side 2</th><th>Venue</th><th>Winner</th></tr>
+</thead>
+<tbody>
+<tr>
+<td>M103</td>
+<td>Sat 18 Jul 2026</td>
+<td>22:00</td>
+<td>M101 loser<br/><span class="write editable-save" contenteditable="true">Team / owner</span></td>
+<td class="score editable-save" contenteditable="true"></td>
+<td class="score editable-save" contenteditable="true"></td>
+<td>M102 loser<br/><span class="write editable-save" contenteditable="true">Team / owner</span></td>
+<td>Miami, USA</td>
+<td class="write editable-save" contenteditable="true">Winner</td>
+</tr></tbody>
+</table>
+</section>
+<section class="round-section">
+<h2>Final</h2>
+<table class="wall-table">
+<thead>
+<tr><th>Match</th><th>Date</th><th>UK</th><th>Side 1</th><th colspan="2">Score</th><th>Side 2</th><th>Venue</th><th>Winner</th></tr>
+</thead>
+<tbody>
+<tr>
+<td>M104</td>
+<td>Sun 19 Jul 2026</td>
+<td>20:00</td>
+<td>M101 winner<br/><span class="write editable-save" contenteditable="true">Team / owner</span></td>
+<td class="score editable-save" contenteditable="true"></td>
+<td class="score editable-save" contenteditable="true"></td>
+<td>M102 winner<br/><span class="write editable-save" contenteditable="true">Team / owner</span></td>
+<td>New Jersey, USA</td>
+<td class="write editable-save" contenteditable="true">Winner</td>
+</tr></tbody>
+</table>
+</section>
+<p class="small">Sources: Sky Sports UK kick off schedule and FIFA match schedule. Built 10 June 2026.</p>
+
+</main>
+<script>
+var DATA = {"groups": [{"group": "Group A", "teams": [{"team": "Mexico", "owner": "Luca"}, {"team": "South Africa", "owner": "Unallocated"}, {"team": "South Korea", "owner": "Unallocated"}, {"team": "Czech Republic", "owner": "Liam"}]}, {"group": "Group B", "teams": [{"team": "Canada", "owner": "Cameron"}, {"team": "Bosnia & Herzegovina", "owner": "Unallocated"}, {"team": "Qatar", "owner": "Unallocated"}, {"team": "Switzerland", "owner": "Paul"}]}, {"group": "Group C", "teams": [{"team": "Brazil", "owner": "Lorraine"}, {"team": "Morocco", "owner": "Leon"}, {"team": "Haiti", "owner": "Unallocated"}, {"team": "Scotland", "owner": "Mitch"}]}, {"group": "Group D", "teams": [{"team": "USA", "owner": "Phil"}, {"team": "Paraguay", "owner": "Harrison"}, {"team": "Australia", "owner": "Unallocated"}, {"team": "Turkey", "owner": "Andy"}]}, {"group": "Group E", "teams": [{"team": "Germany", "owner": "Elliott"}, {"team": "Curacao", "owner": "Unallocated"}, {"team": "Ivory Coast", "owner": "Carl"}, {"team": "Ecuador", "owner": "Jamie"}]}, {"group": "Group F", "teams": [{"team": "Netherlands", "owner": "Matthew"}, {"team": "Japan", "owner": "Kayleigh"}, {"team": "Sweden", "owner": "Mark"}, {"team": "Tunisia", "owner": "Jack"}]}, {"group": "Group G", "teams": [{"team": "Belgium", "owner": "Zach"}, {"team": "Egypt", "owner": "Joseph"}, {"team": "Iran", "owner": "Unallocated"}, {"team": "New Zealand", "owner": "Unallocated"}]}, {"group": "Group H", "teams": [{"team": "Spain", "owner": "Caitlin"}, {"team": "Cape Verde", "owner": "Unallocated"}, {"team": "Saudi Arabia", "owner": "Unallocated"}, {"team": "Uruguay", "owner": "Janos"}]}, {"group": "Group I", "teams": [{"team": "France", "owner": "Callum"}, {"team": "Senegal", "owner": "Richard"}, {"team": "Iraq", "owner": "Unallocated"}, {"team": "Norway", "owner": "Rob"}]}, {"group": "Group J", "teams": [{"team": "Argentina", "owner": "Bradley"}, {"team": "Algeria", "owner": "James"}, {"team": "Austria", "owner": "Leanne"}, {"team": "Jordan", "owner": "Unallocated"}]}, {"group": "Group K", "teams": [{"team": "Portugal", "owner": "Emily"}, {"team": "DR Congo", "owner": "Unallocated"}, {"team": "Uzbekistan", "owner": "Unallocated"}, {"team": "Colombia", "owner": "Kay"}]}, {"group": "Group L", "teams": [{"team": "England", "owner": "Mark"}, {"team": "Croatia", "owner": "Glen"}, {"team": "Ghana", "owner": "Angus"}, {"team": "Panama", "owner": "Unallocated"}]}], "fixtures": [{"match": "G01", "date": "Thu 11 Jun 2026", "time": "20:00", "group": "Group A", "team1": "Mexico", "owner1": "Luca", "team2": "South Africa", "owner2": "Unallocated", "venue": "Mexico City, Mexico"}, {"match": "G02", "date": "Fri 12 Jun 2026", "time": "03:00", "group": "Group A", "team1": "South Korea", "owner1": "Unallocated", "team2": "Czech Republic", "owner2": "Liam", "venue": "Zapopan, Mexico"}, {"match": "G03", "date": "Fri 12 Jun 2026", "time": "20:00", "group": "Group B", "team1": "Canada", "owner1": "Cameron", "team2": "Bosnia & Herzegovina", "owner2": "Unallocated", "venue": "Toronto, Canada"}, {"match": "G04", "date": "Sat 13 Jun 2026", "time": "02:00", "group": "Group D", "team1": "USA", "owner1": "Phil", "team2": "Paraguay", "owner2": "Harrison", "venue": "Los Angeles, USA"}, {"match": "G05", "date": "Sat 13 Jun 2026", "time": "20:00", "group": "Group B", "team1": "Qatar", "owner1": "Unallocated", "team2": "Switzerland", "owner2": "Paul", "venue": "Santa Clara, USA"}, {"match": "G06", "date": "Sat 13 Jun 2026", "time": "23:00", "group": "Group C", "team1": "Brazil", "owner1": "Lorraine", "team2": "Morocco", "owner2": "Leon", "venue": "New Jersey, USA"}, {"match": "G07", "date": "Sun 14 Jun 2026", "time": "02:00", "group": "Group C", "team1": "Haiti", "owner1": "Unallocated", "team2": "Scotland", "owner2": "Mitch", "venue": "Foxborough, USA"}, {"match": "G08", "date": "Sun 14 Jun 2026", "time": "05:00", "group": "Group D", "team1": "Australia", "owner1": "Unallocated", "team2": "Turkey", "owner2": "Andy", "venue": "Vancouver, Canada"}, {"match": "G09", "date": "Sun 14 Jun 2026", "time": "18:00", "group": "Group E", "team1": "Germany", "owner1": "Elliott", "team2": "Curacao", "owner2": "Unallocated", "venue": "Houston, USA"}, {"match": "G10", "date": "Sun 14 Jun 2026", "time": "21:00", "group": "Group F", "team1": "Netherlands", "owner1": "Matthew", "team2": "Japan", "owner2": "Kayleigh", "venue": "Arlington, USA"}, {"match": "G11", "date": "Mon 15 Jun 2026", "time": "00:00", "group": "Group E", "team1": "Ivory Coast", "owner1": "Carl", "team2": "Ecuador", "owner2": "Jamie", "venue": "Philadelphia, USA"}, {"match": "G12", "date": "Mon 15 Jun 2026", "time": "03:00", "group": "Group F", "team1": "Sweden", "owner1": "Mark", "team2": "Tunisia", "owner2": "Jack", "venue": "Guadalupe, Mexico"}, {"match": "G13", "date": "Mon 15 Jun 2026", "time": "17:00", "group": "Group H", "team1": "Spain", "owner1": "Caitlin", "team2": "Cape Verde", "owner2": "Unallocated", "venue": "Atlanta, USA"}, {"match": "G14", "date": "Mon 15 Jun 2026", "time": "20:00", "group": "Group G", "team1": "Belgium", "owner1": "Zach", "team2": "Egypt", "owner2": "Joseph", "venue": "Seattle, USA"}, {"match": "G15", "date": "Mon 15 Jun 2026", "time": "23:00", "group": "Group H", "team1": "Saudi Arabia", "owner1": "Unallocated", "team2": "Uruguay", "owner2": "Janos", "venue": "Miami, USA"}, {"match": "G16", "date": "Tue 16 Jun 2026", "time": "02:00", "group": "Group G", "team1": "Iran", "owner1": "Unallocated", "team2": "New Zealand", "owner2": "Unallocated", "venue": "Los Angeles, USA"}, {"match": "G17", "date": "Tue 16 Jun 2026", "time": "20:00", "group": "Group I", "team1": "France", "owner1": "Callum", "team2": "Senegal", "owner2": "Richard", "venue": "New Jersey, USA"}, {"match": "G18", "date": "Tue 16 Jun 2026", "time": "23:00", "group": "Group I", "team1": "Iraq", "owner1": "Unallocated", "team2": "Norway", "owner2": "Rob", "venue": "Foxborough, USA"}, {"match": "G19", "date": "Wed 17 Jun 2026", "time": "02:00", "group": "Group J", "team1": "Argentina", "owner1": "Bradley", "team2": "Algeria", "owner2": "James", "venue": "Kansas City, USA"}, {"match": "G20", "date": "Wed 17 Jun 2026", "time": "05:00", "group": "Group J", "team1": "Austria", "owner1": "Leanne", "team2": "Jordan", "owner2": "Unallocated", "venue": "Santa Clara, USA"}, {"match": "G21", "date": "Wed 17 Jun 2026", "time": "18:00", "group": "Group K", "team1": "Portugal", "owner1": "Emily", "team2": "DR Congo", "owner2": "Unallocated", "venue": "Houston, USA"}, {"match": "G22", "date": "Wed 17 Jun 2026", "time": "21:00", "group": "Group L", "team1": "England", "owner1": "Mark", "team2": "Croatia", "owner2": "Glen", "venue": "Arlington, USA"}, {"match": "G23", "date": "Thu 18 Jun 2026", "time": "00:00", "group": "Group L", "team1": "Ghana", "owner1": "Angus", "team2": "Panama", "owner2": "Unallocated", "venue": "Toronto, Canada"}, {"match": "G24", "date": "Thu 18 Jun 2026", "time": "03:00", "group": "Group K", "team1": "Uzbekistan", "owner1": "Unallocated", "team2": "Colombia", "owner2": "Kay", "venue": "Mexico City, Mexico"}, {"match": "G25", "date": "Thu 18 Jun 2026", "time": "17:00", "group": "Group A", "team1": "Czech Republic", "owner1": "Liam", "team2": "South Africa", "owner2": "Unallocated", "venue": "Atlanta, USA"}, {"match": "G26", "date": "Thu 18 Jun 2026", "time": "20:00", "group": "Group B", "team1": "Switzerland", "owner1": "Paul", "team2": "Bosnia & Herzegovina", "owner2": "Unallocated", "venue": "Los Angeles, USA"}, {"match": "G27", "date": "Thu 18 Jun 2026", "time": "23:00", "group": "Group B", "team1": "Canada", "owner1": "Cameron", "team2": "Qatar", "owner2": "Unallocated", "venue": "Vancouver, Canada"}, {"match": "G28", "date": "Fri 19 Jun 2026", "time": "02:00", "group": "Group A", "team1": "Mexico", "owner1": "Luca", "team2": "South Korea", "owner2": "Unallocated", "venue": "Zapopan, Mexico"}, {"match": "G29", "date": "Fri 19 Jun 2026", "time": "20:00", "group": "Group D", "team1": "USA", "owner1": "Phil", "team2": "Australia", "owner2": "Unallocated", "venue": "Seattle, USA"}, {"match": "G30", "date": "Fri 19 Jun 2026", "time": "23:00", "group": "Group C", "team1": "Scotland", "owner1": "Mitch", "team2": "Morocco", "owner2": "Leon", "venue": "Foxborough, USA"}, {"match": "G31", "date": "Sat 20 Jun 2026", "time": "01:30", "group": "Group C", "team1": "Brazil", "owner1": "Lorraine", "team2": "Haiti", "owner2": "Unallocated", "venue": "Philadelphia, USA"}, {"match": "G32", "date": "Sat 20 Jun 2026", "time": "04:00", "group": "Group D", "team1": "Turkey", "owner1": "Andy", "team2": "Paraguay", "owner2": "Harrison", "venue": "Santa Clara, USA"}, {"match": "G33", "date": "Sat 20 Jun 2026", "time": "18:00", "group": "Group F", "team1": "Netherlands", "owner1": "Matthew", "team2": "Sweden", "owner2": "Mark", "venue": "Houston, USA"}, {"match": "G34", "date": "Sat 20 Jun 2026", "time": "21:00", "group": "Group E", "team1": "Germany", "owner1": "Elliott", "team2": "Ivory Coast", "owner2": "Carl", "venue": "Toronto, Canada"}, {"match": "G35", "date": "Sun 21 Jun 2026", "time": "01:00", "group": "Group E", "team1": "Ecuador", "owner1": "Jamie", "team2": "Curacao", "owner2": "Unallocated", "venue": "Kansas City, USA"}, {"match": "G36", "date": "Sun 21 Jun 2026", "time": "05:00", "group": "Group F", "team1": "Tunisia", "owner1": "Jack", "team2": "Japan", "owner2": "Kayleigh", "venue": "Guadalupe, Mexico"}, {"match": "G37", "date": "Sun 21 Jun 2026", "time": "17:00", "group": "Group H", "team1": "Spain", "owner1": "Caitlin", "team2": "Saudi Arabia", "owner2": "Unallocated", "venue": "Atlanta, USA"}, {"match": "G38", "date": "Sun 21 Jun 2026", "time": "20:00", "group": "Group G", "team1": "Belgium", "owner1": "Zach", "team2": "Iran", "owner2": "Unallocated", "venue": "Los Angeles, USA"}, {"match": "G39", "date": "Sun 21 Jun 2026", "time": "23:00", "group": "Group H", "team1": "Uruguay", "owner1": "Janos", "team2": "Cape Verde", "owner2": "Unallocated", "venue": "Miami, USA"}, {"match": "G40", "date": "Mon 22 Jun 2026", "time": "02:00", "group": "Group G", "team1": "New Zealand", "owner1": "Unallocated", "team2": "Egypt", "owner2": "Joseph", "venue": "Vancouver, Canada"}, {"match": "G41", "date": "Mon 22 Jun 2026", "time": "18:00", "group": "Group J", "team1": "Argentina", "owner1": "Bradley", "team2": "Austria", "owner2": "Leanne", "venue": "Arlington, USA"}, {"match": "G42", "date": "Mon 22 Jun 2026", "time": "22:00", "group": "Group I", "team1": "France", "owner1": "Callum", "team2": "Iraq", "owner2": "Unallocated", "venue": "Philadelphia, USA"}, {"match": "G43", "date": "Tue 23 Jun 2026", "time": "01:00", "group": "Group I", "team1": "Norway", "owner1": "Rob", "team2": "Senegal", "owner2": "Richard", "venue": "Toronto, Canada"}, {"match": "G44", "date": "Tue 23 Jun 2026", "time": "04:00", "group": "Group J", "team1": "Jordan", "owner1": "Unallocated", "team2": "Algeria", "owner2": "James", "venue": "Santa Clara, USA"}, {"match": "G45", "date": "Tue 23 Jun 2026", "time": "18:00", "group": "Group K", "team1": "Portugal", "owner1": "Emily", "team2": "Uzbekistan", "owner2": "Unallocated", "venue": "Houston, USA"}, {"match": "G46", "date": "Tue 23 Jun 2026", "time": "21:00", "group": "Group L", "team1": "England", "owner1": "Mark", "team2": "Ghana", "owner2": "Angus", "venue": "Foxborough, USA"}, {"match": "G47", "date": "Wed 24 Jun 2026", "time": "00:00", "group": "Group L", "team1": "Panama", "owner1": "Unallocated", "team2": "Croatia", "owner2": "Glen", "venue": "Foxborough, USA"}, {"match": "G48", "date": "Wed 24 Jun 2026", "time": "03:00", "group": "Group K", "team1": "Colombia", "owner1": "Kay", "team2": "DR Congo", "owner2": "Unallocated", "venue": "Zapopan, Mexico"}, {"match": "G49", "date": "Wed 24 Jun 2026", "time": "20:00", "group": "Group B", "team1": "Switzerland", "owner1": "Paul", "team2": "Canada", "owner2": "Cameron", "venue": "Vancouver, Canada"}, {"match": "G50", "date": "Wed 24 Jun 2026", "time": "20:00", "group": "Group B", "team1": "Bosnia & Herzegovina", "owner1": "Unallocated", "team2": "Qatar", "owner2": "Unallocated", "venue": "Seattle, USA"}, {"match": "G51", "date": "Wed 24 Jun 2026", "time": "23:00", "group": "Group C", "team1": "Morocco", "owner1": "Leon", "team2": "Haiti", "owner2": "Unallocated", "venue": "Atlanta, USA"}, {"match": "G52", "date": "Wed 24 Jun 2026", "time": "23:00", "group": "Group C", "team1": "Scotland", "owner1": "Mitch", "team2": "Brazil", "owner2": "Lorraine", "venue": "Miami, USA"}, {"match": "G53", "date": "Thu 25 Jun 2026", "time": "02:00", "group": "Group A", "team1": "South Africa", "owner1": "Unallocated", "team2": "South Korea", "owner2": "Unallocated", "venue": "Guadalupe, Mexico"}, {"match": "G54", "date": "Thu 25 Jun 2026", "time": "02:00", "group": "Group A", "team1": "Czech Republic", "owner1": "Liam", "team2": "Mexico", "owner2": "Luca", "venue": "Mexico City, Mexico"}, {"match": "G55", "date": "Thu 25 Jun 2026", "time": "21:00", "group": "Group E", "team1": "Curacao", "owner1": "Unallocated", "team2": "Ivory Coast", "owner2": "Carl", "venue": "Philadelphia, USA"}, {"match": "G56", "date": "Thu 25 Jun 2026", "time": "21:00", "group": "Group E", "team1": "Ecuador", "owner1": "Jamie", "team2": "Germany", "owner2": "Elliott", "venue": "New Jersey, USA"}, {"match": "G57", "date": "Fri 26 Jun 2026", "time": "00:00", "group": "Group F", "team1": "Tunisia", "owner1": "Jack", "team2": "Netherlands", "owner2": "Matthew", "venue": "Kansas City, USA"}, {"match": "G58", "date": "Fri 26 Jun 2026", "time": "00:00", "group": "Group F", "team1": "Japan", "owner1": "Kayleigh", "team2": "Sweden", "owner2": "Mark", "venue": "Arlington, USA"}, {"match": "G59", "date": "Fri 26 Jun 2026", "time": "03:00", "group": "Group D", "team1": "Turkey", "owner1": "Andy", "team2": "USA", "owner2": "Phil", "venue": "Los Angeles, USA"}, {"match": "G60", "date": "Fri 26 Jun 2026", "time": "03:00", "group": "Group D", "team1": "Paraguay", "owner1": "Harrison", "team2": "Australia", "owner2": "Unallocated", "venue": "Santa Clara, USA"}, {"match": "G61", "date": "Fri 26 Jun 2026", "time": "20:00", "group": "Group I", "team1": "Norway", "owner1": "Rob", "team2": "France", "owner2": "Callum", "venue": "Foxborough, USA"}, {"match": "G62", "date": "Fri 26 Jun 2026", "time": "20:00", "group": "Group I", "team1": "Senegal", "owner1": "Richard", "team2": "Iraq", "owner2": "Unallocated", "venue": "Toronto, Canada"}, {"match": "G63", "date": "Sat 27 Jun 2026", "time": "01:00", "group": "Group H", "team1": "Cape Verde", "owner1": "Unallocated", "team2": "Saudi Arabia", "owner2": "Unallocated", "venue": "Houston, USA"}, {"match": "G64", "date": "Sat 27 Jun 2026", "time": "01:00", "group": "Group H", "team1": "Uruguay", "owner1": "Janos", "team2": "Spain", "owner2": "Caitlin", "venue": "Zapopan, Mexico"}, {"match": "G65", "date": "Sat 27 Jun 2026", "time": "04:00", "group": "Group G", "team1": "New Zealand", "owner1": "Unallocated", "team2": "Belgium", "owner2": "Zach", "venue": "Vancouver, Canada"}, {"match": "G66", "date": "Sat 27 Jun 2026", "time": "04:00", "group": "Group G", "team1": "Egypt", "owner1": "Joseph", "team2": "Iran", "owner2": "Unallocated", "venue": "Seattle, USA"}, {"match": "G67", "date": "Sat 27 Jun 2026", "time": "22:00", "group": "Group L", "team1": "Panama", "owner1": "Unallocated", "team2": "England", "owner2": "Mark", "venue": "New Jersey, USA"}, {"match": "G68", "date": "Sat 27 Jun 2026", "time": "22:00", "group": "Group L", "team1": "Croatia", "owner1": "Glen", "team2": "Ghana", "owner2": "Angus", "venue": "Philadelphia, USA"}, {"match": "G69", "date": "Sun 28 Jun 2026", "time": "00:30", "group": "Group K", "team1": "Colombia", "owner1": "Kay", "team2": "Portugal", "owner2": "Emily", "venue": "Miami, USA"}, {"match": "G70", "date": "Sun 28 Jun 2026", "time": "00:30", "group": "Group K", "team1": "DR Congo", "owner1": "Unallocated", "team2": "Uzbekistan", "owner2": "Unallocated", "venue": "Atlanta, USA"}, {"match": "G71", "date": "Sun 28 Jun 2026", "time": "03:00", "group": "Group J", "team1": "Algeria", "owner1": "James", "team2": "Austria", "owner2": "Leanne", "venue": "Kansas City, USA"}, {"match": "G72", "date": "Sun 28 Jun 2026", "time": "03:00", "group": "Group J", "team1": "Jordan", "owner1": "Unallocated", "team2": "Argentina", "owner2": "Bradley", "venue": "Arlington, USA"}]};
+
+/*
+*/
+(function () {
+  var storageAvailable = false;
+  try {
+    var testKey = 'wc2026-storage-test';
+    window.localStorage.setItem(testKey, '1');
+    window.localStorage.removeItem(testKey);
+    storageAvailable = true;
+  } catch (e) {
+    storageAvailable = false;
+  }
+
+  function safeGet(key) {
+    if (!storageAvailable) return null;
+    try { return window.localStorage.getItem(key); } catch (e) { return null; }
+  }
+
+  function safeSet(key, value) {
+    if (!storageAvailable) return;
+    try { window.localStorage.setItem(key, value); } catch (e) {}
+  }
+
+  function safeRemove(key) {
+    if (!storageAvailable) return;
+    try { window.localStorage.removeItem(key); } catch (e) {}
+  }
+
+  function groupId(groupName) {
+    return String(groupName).replace(/[^A-Za-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  }
+
+  function emptyStats() {
+    var stats = {};
+    for (var g = 0; g < DATA.groups.length; g++) {
+      var group = DATA.groups[g];
+      for (var t = 0; t < group.teams.length; t++) {
+        var entry = group.teams[t];
+        stats[entry.team] = {
+          team: entry.team,
+          owner: entry.owner,
+          group: group.group,
+          seed: t,
+          P: 0,
+          W: 0,
+          D: 0,
+          L: 0,
+          GF: 0,
+          GA: 0,
+          GD: 0,
+          Pts: 0
+        };
+      }
+    }
+    return stats;
+  }
+
+  function scoreValue(match, side) {
+    var el = document.getElementById(match + '-s' + side);
+    if (!el) return null;
+    var raw = String(el.value).replace(/\s+/g, '');
+    if (raw === '') return null;
+    var val = parseInt(raw, 10);
+    if (isNaN(val) || val < 0 || String(val) !== raw) return null;
+    return val;
+  }
+
+  function escapeHtml(value) {
+    return String(value).replace(/[&<>'\"]/g, function (char) {
+      return {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        "'": '&#039;',
+        '\"': '&quot;'
+      }[char];
+    });
+  }
+
+  function badgeHtml(owner) {
+    var cls = owner === 'Unallocated' ? 'unallocated' : 'allocated';
+    return '<span class="badge ' + cls + '">' + escapeHtml(owner) + '</span>';
+  }
+
+  function recordResult(stats, fixture, s1, s2) {
+    var a = stats[fixture.team1];
+    var b = stats[fixture.team2];
+    if (!a || !b) return;
+
+    a.P += 1;
+    b.P += 1;
+    a.GF += s1;
+    a.GA += s2;
+    b.GF += s2;
+    b.GA += s1;
+
+    if (s1 > s2) {
+      a.W += 1;
+      a.Pts += 3;
+      b.L += 1;
+    } else if (s2 > s1) {
+      b.W += 1;
+      b.Pts += 3;
+      a.L += 1;
+    } else {
+      a.D += 1;
+      b.D += 1;
+      a.Pts += 1;
+      b.Pts += 1;
+    }
+
+    a.GD = a.GF - a.GA;
+    b.GD = b.GF - b.GA;
+  }
+
+  function updateWinnerCell(fixture, s1, s2) {
+    var cell = document.getElementById('winner-' + fixture.match);
+    if (!cell) return;
+    if (s1 === null || s2 === null) {
+      cell.innerHTML = '';
+      return;
+    }
+    if (s1 === s2) {
+      cell.innerHTML = 'Draw';
+      return;
+    }
+    var winner = s1 > s2 ? fixture.team1 : fixture.team2;
+    var owner = s1 > s2 ? fixture.owner1 : fixture.owner2;
+    cell.innerHTML = escapeHtml(winner) + '<br>' + badgeHtml(owner);
+  }
+
+  function setText(row, selector, value) {
+    var cell = row.querySelector(selector);
+    if (cell) cell.textContent = value;
+  }
+
+  function cssEscape(value) {
+    if (window.CSS && window.CSS.escape) return window.CSS.escape(value);
+    return String(value).replace(/\\/g, '\\\\').replace(/"/g, '\\"');
+  }
+
+  function findRowByTeam(tbody, team) {
+    var nodes = tbody.getElementsByTagName('tr');
+    for (var i = 0; i < nodes.length; i++) {
+      if (nodes[i].getAttribute('data-team') === team) return nodes[i];
+    }
+    return null;
+  }
+
+  function renderTables(stats) {
+    for (var g = 0; g < DATA.groups.length; g++) {
+      var group = DATA.groups[g];
+      var tbody = document.querySelector('#standings-' + groupId(group.group) + ' tbody');
+      if (!tbody) continue;
+
+      var rows = [];
+      for (var t = 0; t < group.teams.length; t++) {
+        rows.push(stats[group.teams[t].team]);
+      }
+
+      rows.sort(function (a, b) {
+        return (b.Pts - a.Pts) ||
+          (b.GD - a.GD) ||
+          (b.GF - a.GF) ||
+          (b.W - a.W) ||
+          (a.seed - b.seed);
+      });
+
+      for (var r = 0; r < rows.length; r++) {
+        var item = rows[r];
+        var row = tbody.querySelector('tr[data-team="' + cssEscape(item.team) + '"]');
+        if (!row) row = findRowByTeam(tbody, item.team);
+        if (!row) continue;
+
+        row.className = 'rank-' + (r + 1);
+        setText(row, '.pos', r + 1);
+        setText(row, '.points', item.Pts);
+        setText(row, '.played', item.P);
+        setText(row, '.wins', item.W);
+        setText(row, '.draws', item.D);
+        setText(row, '.losses', item.L);
+        setText(row, '.gf', item.GF);
+        setText(row, '.ga', item.GA);
+        setText(row, '.gd', item.GD);
+        tbody.appendChild(row);
+      }
+    }
+  }
+
+  function recalc() {
+    var stats = emptyStats();
+    for (var i = 0; i < DATA.fixtures.length; i++) {
+      var fixture = DATA.fixtures[i];
+      var s1 = scoreValue(fixture.match, 1);
+      var s2 = scoreValue(fixture.match, 2);
+      updateWinnerCell(fixture, s1, s2);
+      if (s1 !== null && s2 !== null) recordResult(stats, fixture, s1, s2);
+    }
+    renderTables(stats);
+  }
+
+  function saveInput(el) {
+    if (!el || !el.id) return;
+    safeSet('wc2026-sweepstake-' + el.id, el.value);
+  }
+
+  function loadInput(el) {
+    if (!el || !el.id) return;
+    var val = safeGet('wc2026-sweepstake-' + el.id);
+    if (val !== null) el.value = val;
+  }
+
+  function hasClass(el, cls) {
+    return (' ' + (el.className || '') + ' ').indexOf(' ' + cls + ' ') > -1;
+  }
+
+  function initialiseInputs() {
+    var fields = document.querySelectorAll('.score-input, .note-input');
+    for (var i = 0; i < fields.length; i++) {
+      loadInput(fields[i]);
+    }
+
+    document.addEventListener('input', function (event) {
+      var el = event.target;
+      if (!el) return;
+      if (hasClass(el, 'score-input')) {
+        if (Number(el.value) < 0) el.value = '';
+        saveInput(el);
+        recalc();
+      } else if (hasClass(el, 'note-input')) {
+        saveInput(el);
+      } else if (hasClass(el, 'editable-save')) {
+        var key = el.getAttribute('data-save-key');
+        if (!key) return;
+        safeSet('wc2026-sweepstake-' + key, el.innerHTML);
+      }
+    });
+
+    var editables = document.querySelectorAll('.editable-save');
+    for (var e = 0; e < editables.length; e++) {
+      var key = 'editable-' + e;
+      editables[e].setAttribute('data-save-key', key);
+      var val = safeGet('wc2026-sweepstake-' + key);
+      if (val !== null) editables[e].innerHTML = val;
+    }
+  }
+
+  function clearScores() {
+    var fields = document.querySelectorAll('.score-input');
+    for (var i = 0; i < fields.length; i++) {
+      fields[i].value = '';
+      safeRemove('wc2026-sweepstake-' + fields[i].id);
+    }
+    recalc();
+  }
+
+  function clearNotes() {
+    var fields = document.querySelectorAll('.note-input');
+    for (var i = 0; i < fields.length; i++) {
+      fields[i].value = '';
+      safeRemove('wc2026-sweepstake-' + fields[i].id);
+    }
+  }
+
+  function bindButtons() {
+    var recalcBtn = document.getElementById('recalcBtn');
+    var clearScoresBtn = document.getElementById('clearScoresBtn');
+    var clearNotesBtn = document.getElementById('clearNotesBtn');
+    if (recalcBtn) recalcBtn.onclick = recalc;
+    if (clearScoresBtn) clearScoresBtn.onclick = clearScores;
+    if (clearNotesBtn) clearNotesBtn.onclick = clearNotes;
+  }
+
+  function start() {
+    initialiseInputs();
+    bindButtons();
+    recalc();
+  }
+
+  window.wallChartRecalc = recalc;
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', start);
+  } else {
+    start();
+  }
+})();
+</script>
+</body>
+</html>
